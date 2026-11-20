@@ -1,0 +1,947 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Fundamentos para diseñar experiencias de aprendizaje</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<style>
+/* Layout: una diapositiva a la vez; encabezado con regla fina y espacio para logotipo; esquina diagonal inferior derecha.
+   Paleta institucional de la plantilla: rojo, negro, taupe, gris. Íconos de línea negra, sin relleno. */
+:root{
+  color-scheme:light; --bg:#FFFFFF; --fg:#1A1717; --mut:#5E5550; --red:#E02636; --red-t:#D01F30; --on-red:#FFFFFF;
+  --taupe:#847770; --rule:#CFC9C5; --soft:#F3F1F0; --tint:#FCE6E8; --ink:#000000;
+  --serif:'Source Serif 4',Georgia,'Times New Roman',serif; --sans:'Fira Sans','Lucida Sans','Segoe UI',system-ui,sans-serif;
+  --fs:clamp(15px,.85vw + 8.5px,22px); --h1:clamp(27px,2.9vw + 6px,54px); --h2:clamp(24px,2.1vw + 7px,42px);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:400 var(--fs)/1.45 var(--sans);padding-block:0;margin:0}
+.g{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::after{content:"";position:fixed;right:0;bottom:0;width:72px;height:72px;background:linear-gradient(to top left,var(--soft) 50%,transparent 50%);pointer-events:none;z-index:1}
+header.top{display:flex;align-items:center;gap:1rem;padding-top:.9rem;padding-bottom:.6rem}
+header.top .t{font-size:.62em;line-height:1.25;color:var(--mut);max-width:24ch}
+header.top .t b{display:block;font-weight:600;color:var(--fg)}
+header.top .l{flex:1;height:1px;background:var(--rule)}
+.logo{display:block;height:clamp(40px,5vw,58px);width:auto;max-width:40vw}
+main{min-height:calc(100svh - 9.5rem)}
+.slide{display:none;padding-block:1rem 1.6rem}.slide.on{display:block}
+h1,h2,h3{font-family:var(--serif);font-weight:700;margin:0;text-wrap:balance;letter-spacing:-.005em}
+h1{font-size:var(--h1);line-height:1.08}h2{font-size:var(--h2);line-height:1.12;margin-bottom:.35em}h3{font-size:1.08em;line-height:1.2;margin-bottom:.2em}
+.sub{font-weight:600;margin:0 0 .6em;max-width:70ch}
+p{margin:0 0 .6em;max-width:68ch}.mut{color:var(--mut)}.src{font-size:.68em;color:var(--mut);margin-top:1em;max-width:none}
+.cols{display:grid;gap:clamp(1rem,2.4vw,2.2rem);grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));align-items:start}
+.cols>*{min-width:0}
+.grid{display:grid;gap:clamp(.8rem,1.6vw,1.4rem);grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}.grid>*{min-width:0}
+.ic{width:2.6em;height:2.6em;flex:none;fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.it{display:flex;gap:.8rem;align-items:flex-start}.it p{font-size:.86em;margin:0;color:var(--mut)}
+.it h3{font-size:1em}
+.pg{grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr))}.pr .ic{width:2.2em;height:2.2em}.nb{display:inline-block;background:var(--red);color:#fff;font:600 .8em var(--sans);width:1.5em;height:1.5em;line-height:1.5em;text-align:center;margin-right:.45em;vertical-align:.05em}
+.it p.fu{font-size:.74em;margin-top:.35em;color:var(--mut)}
+ul.sq{list-style:none;margin:0 0 .6em;padding:0}ul.sq li{position:relative;padding-left:1.1em;margin-bottom:.35em;max-width:62ch}
+ul.sq li::before{content:"";position:absolute;left:0;top:.55em;width:.45em;height:.45em;background:var(--red)}
+.pan{background:var(--soft);border-radius:3px;padding:1rem 1.2rem}.pan.red{background:var(--tint)}
+.pan h3{margin-bottom:.3em}
+.qd{position:relative;display:grid;grid-template-columns:1.6em 1fr 1fr 1.6em;grid-template-rows:auto 1fr 1fr auto;gap:6px;max-width:520px;margin:auto}
+.qd .ax{font:600 .7em var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--mut);text-align:center}
+.qd .t{grid-column:2/4;grid-row:1}.qd .b{grid-column:2/4;grid-row:4}
+.qd .l{grid-column:1;grid-row:2/4;writing-mode:vertical-rl;transform:rotate(180deg)}.qd .r{grid-column:4;grid-row:2/4;writing-mode:vertical-rl}
+.qd .q{min-height:7.2em;text-align:left;font-size:.78em;line-height:1.3;padding:.7em .8em;border-width:1.5px;background:var(--soft);border-color:var(--soft)}
+.qd .q b{display:block;font-family:var(--serif);font-size:1.05em;margin-bottom:.25em}
+.qd .q1{grid-column:2;grid-row:2}.qd .q2{grid-column:3;grid-row:2}.qd .q3{grid-column:2;grid-row:3}.qd .q4{grid-column:3;grid-row:3}
+.qd .q[aria-pressed=true]{background:var(--red);border-color:var(--red);color:#fff}
+.qd .ctr{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--bg);border:1.5px solid var(--fg);padding:.25em .7em;font:700 .78em var(--serif);z-index:1}
+
+.exg{display:grid;gap:clamp(1rem,2.4vw,2rem);grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));align-items:start}.exg>*{min-width:0}
+.cyc{width:100%;max-width:420px;height:auto;display:block;margin:auto}
+.cyc .nd{cursor:pointer}.cyc .nd rect,.cyc .nd path,.cyc .nd circle{fill:var(--soft);stroke:var(--rule);stroke-width:1.5}
+.cyc .nd.on rect,.cyc .nd.on path,.cyc .nd.on circle{fill:var(--red);stroke:var(--red)}
+.cyc .nd text{font:600 14px var(--serif);fill:var(--fg)}.cyc .nd .sm{font:400 11px var(--sans);fill:var(--mut)}
+.cyc .nd.on text,.cyc .nd.on .sm{fill:#fff}.cyc .nd.on text.lb{fill:var(--fg)}.cyc .nd:focus-visible{outline:none}.cyc .nd:focus-visible rect,.cyc .nd:focus-visible path,.cyc .nd:focus-visible circle{stroke:var(--fg);stroke-width:3}
+.cyc .ar{fill:none;stroke:var(--taupe);stroke-width:2}.cyc .op{stroke:var(--taupe);stroke-width:1.5;stroke-dasharray:4 4}
+.meta{border-top:2px solid var(--red);margin-top:.8rem;padding-top:.6rem}.meta ul{margin-bottom:.3em}
+.chip{display:inline-block;background:var(--red);color:#fff;font:600 .68em var(--sans);letter-spacing:.06em;text-transform:uppercase;padding:.2em .6em;margin-bottom:.5em}
+.loop{display:flex;gap:.6rem;align-items:center;font-size:.84em;color:var(--mut);margin:.2rem 0 .8rem}.loop .ic{width:1.8em;height:1.8em}
+.fig{font-size:.7em;color:var(--mut);text-align:center;margin-top:.2em}
+
+.bk{display:flex;gap:.6rem;align-items:center;margin:0 0 .5rem;font-size:.7em;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}.bk b{background:var(--red);color:#fff;padding:.2em .6em;font-weight:600}
+.tm .tl{font-size:.78em;color:var(--mut);max-width:16em}.tms{display:flex;flex-wrap:wrap;gap:.6rem}
+input[type=text],textarea,select{font:inherit;font-size:.85em;color:var(--fg);background:var(--bg);border:1.5px solid var(--rule);border-radius:3px;padding:.4em .6em;max-width:100%}
+input[type=text]:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--red-t);outline-offset:1px}
+input[type=checkbox]{accent-color:var(--red);width:1.1em;height:1.1em;flex:none;margin-top:.25em}
+.ckl{list-style:none;margin:0;padding:0}.ckl li{margin-bottom:.4em}.ckl label{display:flex;gap:.55em;align-items:flex-start;cursor:pointer;max-width:64ch}
+.ckc{font:700 1.1em var(--serif);margin:.6rem 0 0}
+.note{background:var(--soft);border:1.5px solid var(--rule);border-left:4px solid var(--taupe);border-radius:2px;padding:.5em .7em;font-size:.8em;line-height:1.3;text-align:left;width:100%;display:block;color:var(--fg)}
+.note small{display:block;font-size:.8em;color:var(--mut);margin-top:.2em}.note.sel{border-color:var(--red);border-left-color:var(--red);box-shadow:0 0 0 2px var(--red)}
+.bd{display:grid;gap:.8rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));margin-top:.8rem}.bd>div{min-width:0}
+.bd .col{background:var(--soft);padding:.7rem;min-height:12em;display:flex;flex-direction:column;gap:.5rem}.bd .col h3{margin:0}
+.bd .col.mj{border-top:4px solid var(--red)}.bd .col.pe{border-top:4px solid var(--taupe)}
+.stk{background:var(--bg);border:1.5px solid var(--rule);padding:.5em .7em;font-size:.82em;line-height:1.3}.stk i{display:inline-block;font-style:normal;font-size:.78em;background:var(--tint);padding:.05em .5em;margin-top:.3em;color:var(--fg)}
+.frm{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}.frm input[type=text]{flex:1;min-width:12em}
+.bar{display:grid;grid-template-columns:minmax(8em,14em) 1fr 3em;gap:.5rem;align-items:center;font-size:.82em;margin:.25em 0}.bar div.t{height:.9em;background:var(--rule)}.bar div.t i{display:block;height:100%;background:var(--red)}.bar b{text-align:right;font-variant-numeric:tabular-nums}
+.qt{margin:0 0 .6em;font-size:.86em;max-width:none;border-left:3px solid var(--rule);padding-left:.7em}.qt b{display:block;font-size:.82em;color:var(--mut);font-weight:600}
+.afw{display:grid;gap:1rem;grid-template-columns:minmax(0,1fr) minmax(0,2.4fr);align-items:start}@media (max-width:760px){.afw{grid-template-columns:minmax(0,1fr)}}.afp{display:grid;gap:.4rem;max-height:52vh;overflow:auto;padding:2px}.afp .note{font-size:.74em}
+.afc{display:grid;gap:.6rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr)) }.afc .note{font-size:.74em}.afc>div{background:var(--soft);padding:.5rem;min-width:0;display:flex;flex-direction:column;gap:.4rem;min-height:6em}
+.afc input[type=text]{width:100%;font-weight:600}.afb{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin:.4rem 0;font-size:.85em}
+.afb .sl{color:var(--mut)}
+.pcard{background:var(--soft);padding:1rem;display:grid;gap:.5rem}.pcard .hd{display:flex;gap:.8rem;align-items:center;margin-bottom:.3rem}.pcard .hd .ic{width:3em;height:3em}
+.pcard .gr{display:grid;gap:.4rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr))}
+.pcard .gr button{text-align:left;font-size:.78em;line-height:1.3;padding:.6em .7em;background:var(--bg)}.pcard .gr button b{display:block;font-family:var(--serif);font-size:1.05em;margin-bottom:.15em}
+.pcard .gr button[aria-pressed=true]{background:var(--red);border-color:var(--red);color:#fff}
+.emg{display:grid;gap:.4rem;grid-template-columns:1fr 1fr}.emg button{text-align:left;font-size:.8em;line-height:1.3;padding:.7em;min-height:5.2em;background:var(--soft);border-color:var(--soft)}
+.emg button b{display:block;font-family:var(--serif);font-size:1.05em;margin-bottom:.2em}.emg button span{display:block;color:var(--mut)}.emg button.wd{grid-column:1/3}
+.emg button[aria-pressed=true]{background:var(--red);border-color:var(--red);color:#fff}.emg button[aria-pressed=true] span{color:#fff}
+.mx th{background:var(--soft);font-size:.9em}.mx td:first-child{font-weight:400;white-space:normal}.mx.blank td{height:3.2em;color:transparent}
+.hd2{font:600 .7em var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:0 0 .2em}
+.def{border-left:4px solid var(--red);background:var(--soft);padding:.7rem 1rem;margin:0 0 1rem;max-width:72ch}.def p{margin:0;max-width:none}.def b{font-family:var(--serif)}
+.pill{display:inline-block;border:1.5px solid var(--rule);border-radius:999px;padding:.12em .7em;font-size:.8em;margin:0 .3em .35em 0;background:var(--bg)}
+button{font:inherit;color:var(--fg);background:var(--bg);border:1.5px solid var(--rule);border-radius:3px;padding:.4em .9em;cursor:pointer;font-size:.82em}
+button:hover{border-color:var(--fg)}button:focus-visible{outline:3px solid var(--red-t);outline-offset:2px}
+button[aria-selected=true],button[aria-pressed=true]{background:var(--red);color:var(--on-red);border-color:var(--red)}
+table{border-collapse:collapse;width:100%;font-size:.84em}th,td{text-align:left;padding:.55em .7em;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--serif);font-weight:700}td:first-child{font-weight:600;white-space:nowrap}.scr{overflow-x:auto}
+svg text{fill:var(--fg);font:500 13px var(--sans)}svg .w{fill:#fff}svg .m{fill:var(--mut);font-weight:400;font-size:12px}
+/* cover */
+.cover{background:var(--bg);color:var(--fg);margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:clamp(1.5rem,5vw,4rem) max(16px,env(safe-area-inset-left,0px));position:relative;overflow:hidden;min-height:calc(100svh - 9rem);display:none;flex-direction:column;justify-content:center;gap:1rem}
+.slide.on.cv{display:block;padding:0}.slide.on .cover{display:flex}
+.cover h1{color:var(--fg);text-transform:uppercase;max-width:15ch;font-size:clamp(30px,4.2vw + 4px,70px)}
+.cover .k{font-size:.82em;letter-spacing:.04em}.cover p{color:var(--mut);max-width:48ch}
+.cover .line{height:2px;background:var(--red);max-width:520px;margin-top:1rem}
+.cover::after{content:"";position:absolute;right:0;bottom:0;width:80px;height:80px;background:linear-gradient(to top left,var(--soft) 50%,transparent 50%)}
+.cover svg.art{position:absolute;right:-2%;top:6%;width:min(52%,620px);pointer-events:none}
+@media (max-width:700px){.cover svg.art{opacity:.25;width:90%;top:2%}}
+/* route */
+.route{display:flex;gap:4px;margin:1rem 0}.route button{border:0;background:var(--soft);text-align:left;padding:.7em .8em;border-radius:2px;min-width:0;flex:var(--w) 1 0}
+.route button b{display:block;font-family:var(--serif);font-size:.95em}.route button small{color:var(--mut);font-size:.78em}
+.route button.hot{background:var(--red);color:#fff}.route button.hot small{color:#fff}
+@media (max-width:700px){.route{flex-direction:column}.route button{flex:none}}
+.eq{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:.4rem 0 1rem;font-family:var(--serif);font-weight:700}
+.eq span{padding:.45em .9em;background:var(--soft)}.eq .r{background:var(--red);color:#fff}.eq i{font-style:normal;color:var(--mut)}
+.flow{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none;padding:0;margin:.6rem 0 1rem}
+.flow li{background:var(--soft);padding:.5em .8em;font-size:.84em;position:relative;margin-right:.9rem}
+.flow li::after{content:"";position:absolute;right:-.85rem;top:50%;margin-top:-.4rem;border:.4rem solid transparent;border-left:.55rem solid var(--red)}
+.flow li:last-child::after{display:none}
+.tm{display:inline-flex;gap:.6rem;align-items:center;margin:.3rem 0 .8rem;border:1.5px solid var(--rule);padding:.3em .6em}
+.tm b{font:700 1.4em var(--serif);min-width:2.6em;font-variant-numeric:tabular-nums}.tm.end{border-color:var(--red)}.tm.end b{color:var(--red-t)}
+.q{font-family:var(--serif);font-size:1.25em;font-weight:600;max-width:34ch;margin-bottom:.6em}
+.tabs{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.8rem}
+.st{display:grid;gap:.4rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));margin-bottom:.5rem}
+.st button{display:flex;flex-direction:column;align-items:flex-start;gap:.2rem;text-align:left;padding:.7em .8em}
+.st button .ic{width:2em;height:2em;stroke:currentColor}.st small{opacity:.85;font-size:.75em}.st b{font-family:var(--serif);font-size:.95em;line-height:1.2}.st small.nm{font-weight:600;opacity:1;margin-top:.2rem}
+.det{min-height:12em}
+.ax{margin-top:.6rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:.4rem}
+.ax button{width:100%;text-align:left}
+.ex{display:grid;gap:.5rem;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr))}
+.ex button{text-align:left;padding:.55em .7em;font-size:.78em;line-height:1.25}.ex button b{display:block;font-family:var(--serif)}.ex button span{opacity:.85;font-size:.9em}
+/* controls */
+footer.ctl{position:sticky;bottom:0;background:var(--bg);border-top:1px solid var(--rule);padding-top:.6rem;padding-bottom:calc(.6rem + env(safe-area-inset-bottom,0px));z-index:2}
+footer.ctl .row{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;padding-right:70px}
+.seg{display:flex;gap:3px;flex:1;min-width:220px}.seg i{display:block;height:6px;background:var(--rule);flex:var(--w) 1 0}.seg i.on{background:var(--red)}.seg i.done{background:var(--taupe)}
+.cnt{font-size:.72em;color:var(--mut);min-width:9em;flex:0 1 22em}
+.refs p{font-size:.7em;margin:0 0 .5em;padding-left:1.6em;text-indent:-1.6em;max-width:none}.refs a{color:var(--red-t)}
+.cols.refs{gap:0 2.4rem}
+@media (prefers-reduced-motion:no-preference){.slide.on{animation:in .18s ease-out}@keyframes in{from{opacity:.5}to{opacity:1}}}
+
+.lv{display:grid;gap:.6rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));margin:.6rem 0}
+.lv div{border:1.5px solid var(--rule);padding:.7em .8em;background:var(--bg)}.lv b.n{display:block;font:700 2em/1 var(--serif);color:var(--red)}.lv h3{margin:.3em 0 .2em;font-size:1em}.lv p{margin:0;font-size:.8em;line-height:1.35}
+.rb td,.rb th{font-size:.9em}.rb td:first-child{white-space:normal;min-width:9em}.rb td button{width:100%;text-align:left;font-size:.78em;line-height:1.3;padding:.5em .6em;border-color:var(--rule);background:var(--bg)}
+.rb td button[aria-pressed=true]{background:var(--red);color:#fff;border-color:var(--red)}
+.rb .w{display:block;font:600 .8em var(--sans);color:var(--taupe)}
+.rbs{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;margin-top:.8rem}.rbs .gr{font:700 2.2em/1 var(--serif);color:var(--red)}.rbs p{margin:0}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-user" viewBox="0 0 48 48"><circle cx="24" cy="16" r="7"/><path d="M9 41c0-9 6-14 15-14s15 5 15 14"/></symbol>
+<symbol id="i-users" viewBox="0 0 48 48"><circle cx="17" cy="17" r="6"/><path d="M5 40c0-7 5-12 12-12s12 5 12 12"/><circle cx="34" cy="15" r="5"/><path d="M32 27c1-.3 2-.4 3-.4 6 0 9 4 9 11"/></symbol>
+<symbol id="i-book" viewBox="0 0 48 48"><path d="M24 12v28M24 12c-4-3-10-4-16-3v27c6-1 12 0 16 4M24 12c4-3 10-4 16-3v27c-6-1-12 0-16 4"/></symbol>
+<symbol id="i-bulb" viewBox="0 0 48 48"><path d="M24 6c-7 0-12 5-12 11 0 4 2 7 5 10 1 1 2 3 2 5h10c0-2 1-4 2-5 3-3 5-6 5-10 0-6-5-11-12-11zM18 40h12M20 44h8"/></symbol>
+<symbol id="i-target" viewBox="0 0 48 48"><circle cx="22" cy="26" r="16"/><circle cx="22" cy="26" r="9"/><circle cx="22" cy="26" r="2"/><path d="M24 24l16-16M33 8h7v7"/></symbol>
+<symbol id="i-route" viewBox="0 0 48 48"><circle cx="10" cy="38" r="4"/><circle cx="38" cy="10" r="4"/><path d="M10 34c0-12 14-6 14-14s14-6 14-10"/></symbol>
+<symbol id="i-search" viewBox="0 0 48 48"><circle cx="21" cy="21" r="12"/><path d="M30 30l12 12"/></symbol>
+<symbol id="i-loop" viewBox="0 0 48 48"><path d="M38 20a14 14 0 0 0-26-4M10 8v8h8M10 28a14 14 0 0 0 26 4M38 40v-8h-8"/></symbol>
+<symbol id="i-cube" viewBox="0 0 48 48"><path d="M24 6l16 9v18l-16 9-16-9V15zM8 15l16 9 16-9M24 24v18"/></symbol>
+<symbol id="i-chat" viewBox="0 0 48 48"><path d="M8 10h32v22H22l-9 8v-8H8zM16 18h16M16 25h10"/></symbol>
+<symbol id="i-check" viewBox="0 0 48 48"><rect x="10" y="9" width="28" height="33" rx="3"/><path d="M17 9V6h14v3M17 24l4 4 8-8M17 35h14"/></symbol>
+<symbol id="i-cap" viewBox="0 0 48 48"><path d="M4 18l20-9 20 9-20 9zM12 22v10c0 3 6 6 12 6s12-3 12-6V22M44 18v12"/></symbol>
+<symbol id="i-gear" viewBox="0 0 48 48"><circle cx="24" cy="24" r="12"/><circle cx="24" cy="24" r="5"/><path d="M24 5v7M24 36v7M5 24h7M36 24h7M11 11l5 5M32 32l5 5M37 11l-5 5M16 32l-5 5"/></symbol>
+<symbol id="i-compass" viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><path d="M31 17l-4 10-10 4 4-10z"/></symbol>
+<symbol id="i-layers" viewBox="0 0 48 48"><path d="M24 6L6 16l18 10 18-10zM6 24l18 10 18-10M6 32l18 10 18-10"/></symbol>
+<symbol id="i-door" viewBox="0 0 48 48"><path d="M12 42V8h20v34M8 42h32M26 25v2"/><path d="M32 14l8 4v24"/></symbol>
+</defs></svg>
+
+<header class="top g"><div class="t"><b>Diplomado: Diseño Instruccional e Innovación del Aprendizaje Digital</b>Módulo 1 · Sesión 1</div><div class="l"></div><img class="logo" alt="IBERO Ciudad de México" src="data:image/png;base64,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"></header>
+
+<main class="g" id="deck">
+
+<!-- 0 PORTADA SESIÓN -->
+<section class="slide cv" data-min="0">
+<div class="cover">
+<svg class="art" viewBox="0 0 600 420" fill="none" stroke="#1A1717" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<circle cx="300" cy="170" r="70" stroke-opacity=".85"/><circle cx="300" cy="170" r="120" stroke-opacity=".4"/><circle cx="300" cy="170" r="170" stroke-opacity=".2"/>
+<circle cx="300" cy="140" r="26"/><path d="M250 215c0-28 22-44 50-44s50 16 50 44" />
+<circle cx="470" cy="80" r="12" fill="#E02636" stroke="#E02636"/><circle cx="130" cy="260" r="9"/><circle cx="480" cy="300" r="9"/><path d="M300 170L470 80M300 170L130 260M300 170L480 300" stroke-opacity=".4"/></svg>
+<p class="k">Sesión 1 · Learner Persona</p>
+<h1>¿Quién es el estudiante y qué necesita?</h1>
+<p>Comprender el enfoque del LXD y sus fundamentos pedagógicos, y construir una Learner Persona a partir de datos.</p>
+<div class="line"></div>
+<p class="k">Módulo 1. Fundamentos del aprendizaje digital · 4 h</p>
+</div>
+</section>
+
+<!-- AGENDA -->
+<section class="slide" data-min="0">
+<h2>Propósito y ruta de la sesión</h2>
+<div class="def" style="max-width:none"><p><b>Propósito.</b> Comprender el enfoque del LXD y sus fundamentos pedagógicos, y construir una Learner Persona a partir de datos.</p></div>
+<p class="sub">Seis bloques en 4 horas. Selecciona uno para ir a su diapositiva.</p>
+<div class="route" id="route2"></div>
+<div class="cols" style="margin-top:1rem">
+<div><h3>Subtemas</h3><ul class="sq"><li>Encuadre del LXD y fundamentos pedagógicos: del diseño centrado en contenidos al centrado en las personas.</li><li>Características, necesidades, motivaciones y expectativas de quienes aprenden en entornos digitales.</li><li>Andragogía, aprendizaje autodirigido y aprendizaje a lo largo de la vida.</li><li>Técnicas de investigación: entrevistas, encuestas, observación y análisis de necesidades.</li><li>Learner Persona y mapa de empatía.</li><li>Barreras, motivadores y oportunidades.</li></ul></div>
+<div><div class="pan red"><h3>Evidencia de la sesión</h3><ul class="sq" style="margin:0"><li>Learner Persona</li><li>Mapa de empatía</li><li>Matriz de barreras, motivadores y oportunidades</li></ul></div>
+<div class="pan" style="margin-top:.8rem"><h3>Trabajo asincrónico</h3><p style="margin:0">Aplicar 3 entrevistas y 1 encuesta a personas reales del contexto elegido por el equipo, para validar y ajustar la persona antes de la sesión 2.</p></div></div></div>
+</section>
+
+<!-- APERTURA 1 -->
+<section class="slide" data-blk="0" data-min="0">
+<p class="bk"><b>Bloque 1 · 20 min</b>Apertura</p>
+<h2>Mi mejor y mi peor experiencia de aprendizaje en línea</h2>
+<p class="sub">Cada participante anota en un tablero qué la hizo memorable.</p>
+<div class="tms"><div class="tm" data-m="300" data-l="1. Escribir en solitario"></div><div class="tm" data-m="300" data-l="2. Compartir en parejas"></div></div>
+<div class="grid" style="margin-top:.6rem">
+<div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-user"/></svg><div><h3>1. Recordar y escribir · 5 min</h3><p>Piensa en tu mejor y en tu peor experiencia de aprendizaje en línea. Escribe una nota por cada una: ¿qué la hizo memorable?</p></div></div>
+<div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-users"/></svg><div><h3>2. Compartir en parejas · 5 min</h3><p>Cuéntale tus dos experiencias a tu pareja. ¿Qué tienen en común sus historias?</p></div></div>
+<div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-layers"/></svg><div><h3>3. Publicar y buscar patrones · 10 min</h3><p>Coloca tus notas en el tablero y observa qué se repite (siguiente diapositiva).</p></div></div></div>
+<div class="pan" style="margin-top:1rem"><h3>Para ayudarte a recordar</h3><span class="pill">¿Quién te acompañó?</span><span class="pill">¿Qué hacías: escuchar, resolver, crear, discutir?</span><span class="pill">¿Cómo te sentías?</span><span class="pill">¿Qué tan fácil fue acceder?</span><span class="pill">¿Qué tiempo tenías?</span></div>
+<p class="src">Dinámica de apertura de la sesión. Dewey (1938): no toda experiencia es educativa; su valor depende de la reflexión y la continuidad.</p>
+</section>
+
+<!-- APERTURA 2 -->
+<section class="slide" data-blk="0" data-min="10">
+<p class="bk"><b>Bloque 1 · 20 min</b>Apertura</p>
+<h2>Tablero: ¿qué la hizo memorable?</h2>
+<div class="tm" data-m="600" data-l="3. Publicar y buscar patrones"></div>
+<div class="frm"><select id="bdC" aria-label="Tipo de experiencia"><option value="0">Mejor experiencia</option><option value="1">Peor experiencia</option></select>
+<select id="bdT" aria-label="Categoría"><option>Acompañamiento y retroalimentación</option><option>Retos y práctica</option><option>Contenido relevante</option><option>Plataforma y acceso</option><option>Emociones y pertenencia</option><option>Tiempo y ritmo</option></select>
+<input type="text" id="bdX" placeholder="¿Qué la hizo memorable?" aria-label="Nota"><button id="bdA">Agregar nota</button><button id="bdE">Cargar ejemplos</button><button id="bdR">Limpiar</button></div>
+<div class="bd"><div class="col mj"><h3>Mejor experiencia</h3><div id="bdM" style="display:grid;gap:.4rem"></div></div><div class="col pe"><h3>Peor experiencia</h3><div id="bdP" style="display:grid;gap:.4rem"></div></div>
+<div class="pan red" style="min-height:12em"><h3>Patrones</h3><div id="bdS" aria-live="polite"><p class="mut">Aún no hay notas.</p></div>
+<p class="mut" style="font-size:.82em;margin:.6em 0 0">Preguntas: ¿qué se repite en las mejores? ¿Y en las peores? ¿Qué dependía de la persona que diseñó, y qué de quien aprendía?</p></div></div>
+<p class="src">Tablero de demostración dentro de la presentación; si el grupo usa otro tablero compartido (por ejemplo, el de su plataforma), proyéctelo en su lugar.</p>
+</section>
+
+<!-- 1 PORTADA -->
+<section class="slide cv" data-blk="1" data-min="0">
+<div class="cover">
+<svg class="art" viewBox="0 0 600 420" fill="none" stroke="#1A1717" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<path d="M20 380C120 380 150 300 230 300S330 360 400 280 470 130 580 60" stroke-opacity=".85"/>
+<circle cx="20" cy="380" r="9"/><circle cx="230" cy="300" r="9"/><circle cx="400" cy="280" r="9"/><circle cx="580" cy="60" r="12" fill="#E02636" stroke="#E02636"/>
+<path d="M120 150a28 28 0 1 1 56 0c0 14-8 20-12 28h-32c-4-8-12-14-12-28zM140 186h24M144 194h16" stroke-opacity=".7"/>
+<path d="M430 360h90M430 380h60" stroke-opacity=".4"/></svg>
+<p class="k">Bloque 2 · Encuadre del LXD</p>
+<h1>Fundamentos para diseñar experiencias de aprendizaje</h1>
+<p>Exposición dialogada: fundamentos pedagógicos y ciclo general del módulo.</p>
+<div class="line"></div>
+<p class="k">Exposición dialogada · 50 min</p>
+</div>
+</section>
+
+<!-- 2 RUTA -->
+<section class="slide" data-blk="1" data-min="0" data-part="0">
+<h2>Qué haremos en estos 50 minutos</h2>
+<p class="sub">Cuatro momentos. Selecciona uno para ir a su diapositiva.</p>
+<div class="route" id="route"></div>
+<div class="grid" style="margin-top:1.2rem">
+<div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-compass"/></svg><div><h3>Explicar</h3><p>Qué es el Learning Experience Design y los ocho principios que orientan sus decisiones.</p></div></div>
+<div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-book"/></svg><div><h3>Relacionar</h3><p>Constructivismo, andragogía y aprendizaje autodirigido con decisiones concretas de diseño.</p></div></div>
+<div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-loop"/></svg><div><h3>Ubicar</h3><p>El ciclo del módulo y el artefacto que se produce en cada sesión.</p></div></div>
+</div>
+</section>
+
+<!-- 3 PAUSA 1 -->
+<section class="slide" data-blk="1" data-min="1" data-part="0">
+<h2>Pausa de diálogo</h2>
+<div class="tm" data-m="120"></div>
+<p class="q">Piensen en la mejor experiencia de aprendizaje que han vivido. ¿Qué recuerdan más: el contenido o lo que vivieron?</p>
+<div class="cols">
+<div class="pan"><h3>Para profundizar</h3><ul class="sq"><li>¿Quién estaba ahí y qué hizo esa persona?</li><li>¿Qué hacían ustedes: escuchar, resolver, crear, discutir?</li><li>¿Qué cambió después en lo que hacían o pensaban?</li></ul></div>
+<div class="pan red"><h3>Una idea para llevarse a la sesión</h3><p>Dewey (1938) advierte que no toda experiencia es educativa: su valor depende de la reflexión, la continuidad y el crecimiento que genera.</p></div>
+</div>
+<p class="src">Dewey (1938). Actividad de apertura de la sesión: «Mi mejor y mi peor experiencia de aprendizaje en línea».</p>
+</section>
+
+<!-- 4 QUE ES EL LXD -->
+<section class="slide" data-blk="1" data-min="3" data-part="0">
+<h2>¿Qué es el Learning Experience Design?</h2>
+<p class="sub">Se diseñan las condiciones para que alguien aprenda, no el aprendizaje en sí.</p>
+<div class="eq"><span>Aprendizaje</span><i>+</i><span>Experiencia</span><i>+</i><span>Diseño</span><i>=</i><span class="r">LXD</span></div>
+<div class="cols">
+<div><div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-user"/></svg><div><h3>Floor (2023)</h3><p>Es el proceso de crear experiencias que llevan a la persona al resultado de aprendizaje deseado, con un enfoque centrado en el ser humano y orientado a objetivos.</p></div></div><br>
+<div class="pan"><h3>Qué integra</h3><span class="pill">Teorías pedagógicas</span><span class="pill">Psicología y ciencias cognitivas</span><span class="pill">Constructivismo y enfoques socioculturales</span><span class="pill">Aprendizaje experiencial</span><span class="pill">Diseño centrado en las personas</span><span class="pill">Diseño de experiencia de usuario</span><span class="pill">Tecnología educativa</span><span class="pill">Accesibilidad e inclusión</span>
+<p style="margin-top:.6em">Una experiencia es una situación que se presenta, requiere tiempo y deja una impresión (Floor, 2023).</p></div></div>
+<div>
+<div class="qd" id="qd" role="group" aria-label="Cuatro cuadrantes del LXD">
+<span class="ax t">Humano</span><span class="ax b">Objetivos</span><span class="ax l">Aprendizaje</span><span class="ax r">Diseño</span>
+<button class="q q1" data-q="0"></button><button class="q q2" data-q="1"></button><button class="q q3" data-q="2"></button><button class="q q4" data-q="3"></button>
+<span class="ctr">Experiencia</span></div>
+<div class="pan red" id="qdet" aria-live="polite" style="margin-top:.7rem"></div></div></div>
+<p class="src">Floor (2023), figura 3.4: descripciones de los cuatro cuadrantes de los que surgió el LXD (esquema rehecho y traducido). Si falta uno de los cuadrantes, el diseño fracasa.</p>
+</section>
+
+<!-- 10b EXPERIENCIAL -->
+<section class="slide" data-blk="1" data-min="6" data-part="0">
+<h2>Cuatro elementos del aprendizaje experiencial</h2>
+<p class="sub">Aprender de la experiencia no es solo «aprender haciendo»: toda experiencia recorre un ciclo de cuatro elementos.</p>
+<div class="exg">
+<div><svg class="cyc" viewBox="0 0 380 300" role="group" aria-label="Ciclo de cuatro elementos: experiencia concreta, observación reflexiva, conceptualización abstracta y experimentación activa">
+<defs><marker id="ah1" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#847770"/></marker></defs>
+<path class="ar" d="M254 34C300 34 310 60 310 122" marker-end="url(#ah1)"/><path class="ar" d="M310 178C310 240 300 266 254 266" marker-end="url(#ah1)"/>
+<path class="ar" d="M126 266C80 266 70 240 70 178" marker-end="url(#ah1)"/><path class="ar" d="M70 122C70 60 80 34 126 34" marker-end="url(#ah1)"/>
+<line class="op" x1="190" y1="62" x2="190" y2="236"/><line class="op" x1="136" y1="150" x2="244" y2="150"/>
+<text x="190" y="146" text-anchor="middle" class="m">pares opuestos</text>
+<g class="nd" data-e="0" tabindex="0" role="button"><rect x="130" y="12" width="120" height="44" rx="3"/><text x="190" y="38" text-anchor="middle">Concreto</text></g>
+<g class="nd" data-e="1" tabindex="0" role="button"><rect x="250" y="128" width="120" height="44" rx="3"/><text x="310" y="147" text-anchor="middle">Reflexivo</text><text x="310" y="163" text-anchor="middle" class="sm">metacognición</text></g>
+<g class="nd" data-e="2" tabindex="0" role="button"><rect x="130" y="244" width="120" height="44" rx="3"/><text x="190" y="270" text-anchor="middle">Abstracto</text></g>
+<g class="nd" data-e="3" tabindex="0" role="button"><rect x="10" y="128" width="120" height="44" rx="3"/><text x="70" y="155" text-anchor="middle">Activo</text></g></svg>
+<p class="fig">Cada experiencia pasa por un ciclo; el resultado alimenta la siguiente experiencia concreta. Esquema rehecho a partir de Floor (2023), fig. 4.2.</p>
+<div class="def" style="margin-top:.8rem"><p><b>Se tratan como un todo.</b> Las personas no tienen «un» estilo de aprendizaje: la experiencia humana combina lo concreto, lo abstracto, lo reflexivo y lo activo (Floor, 2023).</p></div></div>
+<div class="pan red" id="exd" aria-live="polite" style="min-height:22em"></div></div>
+<p class="src">Floor (2023); Kolb (1984); Dewey (1938); Flavell (1979); Schön (1983); Zimmerman (2002). Los criterios de diseño y las preguntas de reflexión son una síntesis para el diplomado.</p>
+</section>
+
+<!-- 10c SER VER -->
+<section class="slide" data-blk="1" data-min="10" data-part="0">
+<h2>Ser, ver, saber y hacer</h2>
+<p class="sub">Floor integra los modelos experienciales en un ciclo centrado en lo que hace quien aprende; cada cuadrante corresponde a un tipo de objetivo de aprendizaje.</p>
+<div class="exg">
+<div><svg class="cyc" viewBox="0 0 360 320" role="group" aria-label="Ciclo ser, ver, saber y hacer con cuatro tipos de objetivos de aprendizaje: comprensión, conocimiento, habilidad y comportamiento"><defs><marker id="ah2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#847770"/></marker></defs><g class="nd" data-s="4" tabindex="0" role="button"><path d="M180 160 L180 40 A120 120 0 0 1 300 160 Z" style="stroke:var(--bg);stroke-width:3"/><text x="240" y="104" text-anchor="middle">Comprensión</text><text x="240" y="119" text-anchor="middle" class="sm">(insight)</text></g><g class="nd" data-s="5" tabindex="0" role="button"><path d="M180 160 L300 160 A120 120 0 0 1 180 280 Z" style="stroke:var(--bg);stroke-width:3"/><text x="240" y="216" text-anchor="middle">Conocimiento</text></g><g class="nd" data-s="6" tabindex="0" role="button"><path d="M180 160 L180 280 A120 120 0 0 1 60 160 Z" style="stroke:var(--bg);stroke-width:3"/><text x="120" y="216" text-anchor="middle">Habilidad</text></g><g class="nd" data-s="7" tabindex="0" role="button"><path d="M180 160 L60 160 A120 120 0 0 1 180 40 Z" style="stroke:var(--bg);stroke-width:3"/><text x="120" y="104" text-anchor="middle">Comportamiento</text></g><line class="op" x1="180" y1="46" x2="180" y2="274"/><line class="op" x1="66" y1="160" x2="294" y2="160"/><path class="ar" d="M233.2 28.3 A142 142 0 0 1 311.7 106.8" marker-end="url(#ah2)"/><path class="ar" d="M311.7 213.2 A142 142 0 0 1 233.2 291.7" marker-end="url(#ah2)"/><path class="ar" d="M126.8 291.7 A142 142 0 0 1 48.3 213.2" marker-end="url(#ah2)"/><path class="ar" d="M48.3 106.8 A142 142 0 0 1 126.8 28.3" marker-end="url(#ah2)"/><g class="nd" data-s="0" tabindex="0" role="button"><circle cx="180" cy="18" r="19"/><text x="180" y="22" text-anchor="middle" style="font-size:11px">Ser</text></g><g class="nd" data-s="1" tabindex="0" role="button"><circle cx="340" cy="160" r="19"/><text x="340" y="164" text-anchor="middle" style="font-size:11px">Ver</text></g><g class="nd" data-s="2" tabindex="0" role="button"><circle cx="180" cy="302" r="19"/><text x="180" y="306" text-anchor="middle" style="font-size:11px">Saber</text></g><g class="nd" data-s="3" tabindex="0" role="button"><circle cx="20" cy="160" r="19"/><text x="20" y="164" text-anchor="middle" style="font-size:11px">Hacer</text></g></svg>
+<p class="fig">Los cuatro tipos de objetivos de aprendizaje se basan en el modelo experiencial cíclico. Esquema rehecho y traducido a partir de Floor (2023), fig. 4.4.</p></div>
+<div class="pan red" id="svd" aria-live="polite" style="min-height:20em"></div></div>
+<div class="def" style="margin-top:1rem;max-width:none"><p><b>Si se omite una parte, se rompe el ciclo.</b> La educación suele centrarse en el conocimiento y las habilidades evaluables, pero conocimiento sin perspectiva es difícil de procesar y valorar, y sin capacidad de aplicarlo se olvida (Floor, 2023).</p></div>
+<p class="src">Floor (2023). Los ejemplos de objetivos para el diplomado son ilustrativos, de elaboración propia.</p>
+</section>
+
+<!-- 12b PROCESO -->
+<section class="slide" data-blk="1" data-min="14" data-part="0">
+<h2>El proceso de diseño de la experiencia de aprendizaje</h2>
+<p class="sub">Seis pasos básicos, iterativos, que se repiten hasta que quien diseña, quien aprende y las partes interesadas estén satisfechos (Floor, 2023).</p>
+<div class="exg"><div><svg class="cyc" style="max-width:480px" viewBox="0 0 460 380" role="group" aria-label="Proceso circular de seis pasos: pregunta, investigación, diseño, desarrollo, prueba y lanzamiento"><defs><marker id="ah3" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#847770"/></marker></defs><path class="ar" d="M266.5 70.5 A125 125 0 0 1 315.2 98.6" marker-end="url(#ah3)"/><path class="ar" d="M351.8 161.9 A125 125 0 0 1 351.8 218.1" marker-end="url(#ah3)"/><path class="ar" d="M315.2 281.4 A125 125 0 0 1 266.5 309.5" marker-end="url(#ah3)"/><path class="ar" d="M193.5 309.5 A125 125 0 0 1 144.8 281.4" marker-end="url(#ah3)"/><path class="ar" d="M108.2 218.1 A125 125 0 0 1 108.2 161.9" marker-end="url(#ah3)"/><path class="ar" d="M144.8 98.6 A125 125 0 0 1 193.5 70.5" marker-end="url(#ah3)"/><g class="nd" data-p="0" tabindex="0" role="button"><circle cx="230.0" cy="65.0" r="24"/><text x="230.0" y="71.0" text-anchor="middle" style="font-size:16px">1</text><text x="230.0" y="31.0" text-anchor="middle" class="lb" style="font-size:14px">Pregunta</text></g><g class="nd" data-p="1" tabindex="0" role="button"><circle cx="338.3" cy="127.5" r="24"/><text x="338.3" y="133.5" text-anchor="middle" style="font-size:16px">2</text><text x="372.3" y="132.5" text-anchor="start" class="lb" style="font-size:14px">Investigación</text></g><g class="nd" data-p="2" tabindex="0" role="button"><circle cx="338.3" cy="252.5" r="24"/><text x="338.3" y="258.5" text-anchor="middle" style="font-size:16px">3</text><text x="372.3" y="257.5" text-anchor="start" class="lb" style="font-size:14px">Diseño</text></g><g class="nd" data-p="3" tabindex="0" role="button"><circle cx="230.0" cy="315.0" r="24"/><text x="230.0" y="321.0" text-anchor="middle" style="font-size:16px">4</text><text x="230.0" y="361.0" text-anchor="middle" class="lb" style="font-size:14px">Desarrollo</text></g><g class="nd" data-p="4" tabindex="0" role="button"><circle cx="121.7" cy="252.5" r="24"/><text x="121.7" y="258.5" text-anchor="middle" style="font-size:16px">5</text><text x="87.7" y="257.5" text-anchor="end" class="lb" style="font-size:14px">Prueba</text></g><g class="nd" data-p="5" tabindex="0" role="button"><circle cx="121.7" cy="127.5" r="24"/><text x="121.7" y="133.5" text-anchor="middle" style="font-size:16px">6</text><text x="87.7" y="132.5" text-anchor="end" class="lb" style="font-size:14px">Lanzamiento</text></g><use href="#i-loop" x="210" y="152" width="40" height="40" style="fill:none;stroke:var(--taupe);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round"/><text x="230" y="212" text-anchor="middle" class="m">Se repite hasta</text><text x="230" y="228" text-anchor="middle" class="m">el lanzamiento</text></svg><p class="fig">Proceso iterativo: cada vuelta acerca la experiencia a su versión final. Esquema rehecho a partir de Floor (2023), fig. 5.2.</p></div>
+<div class="pan red" id="pdt" aria-live="polite" style="min-height:16em"></div></div>
+<p class="src">Floor (2023), fig. 5.2 y capítulo 5. La relación de cada paso con las sesiones del módulo es una propuesta del programa.</p>
+</section>
+
+<!-- 5 PRINCIPIOS -->
+<section class="slide" data-blk="1" data-min="18" data-part="1">
+<h2>Ocho principios que orientan el diseño</h2>
+<p class="sub">De los fundamentos se derivan principios para tomar decisiones pedagógicas y metodológicas, y para justificarlas.</p>
+<div class="grid pg">
+<div class="it pr"><svg class="ic" viewBox="0 0 48 48"><use href="#i-user"/></svg><div><h3><span class="nb">1</span>La persona antes que el contenido</h3><p>El diseño parte de comprender al estudiante: sus características, necesidades, motivaciones, conocimientos previos y contexto.</p><p class="fu">Norman (2013); Knowles et al. (2015)</p></div></div>
+<div class="it pr"><svg class="ic" viewBox="0 0 48 48"><use href="#i-bulb"/></svg><div><h3><span class="nb">2</span>Aprender es construir significados</h3><p>Las experiencias promueven la comprensión, la interpretación, la relación de conceptos y el pensamiento crítico.</p><p class="fu">Piaget (1970); Bruner (1960); Ausubel (1968)</p></div></div>
+<div class="it pr"><svg class="ic" viewBox="0 0 48 48"><use href="#i-route"/></svg><div><h3><span class="nb">3</span>La experiencia es una condición para el aprendizaje</h3><p>Exploración, experimentación, práctica y reflexión relacionan el conocimiento con situaciones concretas.</p><p class="fu">Dewey (1938); Kolb (1984)</p></div></div>
+<div class="it pr"><svg class="ic" viewBox="0 0 48 48"><use href="#i-users"/></svg><div><h3><span class="nb">4</span>El aprendizaje es social y contextual</h3><p>Las interacciones, la colaboración y las comunidades de práctica enriquecen la construcción del conocimiento.</p><p class="fu">Vygotsky (1978); Lave y Wenger (1991)</p></div></div>
+<div class="it pr"><svg class="ic" viewBox="0 0 48 48"><use href="#i-target"/></svg><div><h3><span class="nb">5</span>La motivación se diseña mediante experiencias significativas</h3><p>Autonomía, relevancia, desafío y sentido de pertenencia son elementos centrales.</p><p class="fu">Deci y Ryan (2000); Bandura (1977)</p></div></div>
+<div class="it pr"><svg class="ic" viewBox="0 0 48 48"><use href="#i-gear"/></svg><div><h3><span class="nb">6</span>La tecnología debe tener intencionalidad pedagógica</h3><p>Los recursos digitales se eligen por su contribución a los objetivos de aprendizaje y no por su novedad.</p><p class="fu">Sweller (1988); Mayer (2021)</p></div></div>
+<div class="it pr"><svg class="ic" viewBox="0 0 48 48"><use href="#i-layers"/></svg><div><h3><span class="nb">7</span>La diversidad es un punto de partida</h3><p>Accesibilidad e inclusión orientan la arquitectura de la experiencia desde sus primeras etapas.</p><p class="fu">Meyer et al. (2014); CAST (2024)</p></div></div>
+<div class="it pr"><svg class="ic" viewBox="0 0 48 48"><use href="#i-loop"/></svg><div><h3><span class="nb">8</span>El diseño es iterativo y basado en evidencias</h3><p>Las experiencias se evalúan, prueban y mejoran a partir de las interacciones y los resultados observados.</p><p class="fu">Floor (2023); Norman (2013)</p></div></div>
+</div>
+<p class="src">Principios orientadores del programa, derivados de los fundamentos pedagógicos del LXD. Entre paréntesis: autores que los sustentan.</p>
+</section>
+
+<!-- 7 CONSTRUCTIVISMO -->
+<section class="slide" data-blk="1" data-min="22" data-part="1">
+<h2>Constructivismo: aprender es construir significados</h2>
+<div class="def"><p><b>Constructivismo.</b> Enfoque que entiende el aprendizaje como un proceso activo en el que cada persona construye su conocimiento al interactuar con el entorno y relacionar lo nuevo con lo que ya sabe, en lugar de recibirlo ya elaborado.</p></div>
+<ol class="flow" aria-label="Secuencia de construcción del conocimiento"><li>Saberes previos</li><li>Desafío que provoca una pregunta</li><li>Exploración y reorganización</li><li>Nuevo significado</li></ol>
+<div class="cols">
+<div><div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-cube"/></svg><div><h3>Piaget (1970)</h3><p>El conocimiento se desarrolla mediante asimilación y acomodación: se incorpora información y se reorganizan las estructuras cognitivas.</p></div></div><br>
+<div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-compass"/></svg><div><h3>Bruner (1960)</h3><p>Valora el descubrimiento y la organización progresiva del conocimiento: indagar, formular hipótesis y resolver problemas.</p></div></div></div>
+<div class="pan"><h3>Decisiones de diseño en LXD</h3><ul class="sq"><li>Recuperar los conocimientos previos de quienes aprenden.</li><li>Plantear desafíos cognitivos que provoquen preguntas.</li><li>Promover exploración y descubrimiento.</li><li>Incluir resolución de problemas y reflexión.</li></ul><p class="mut" style="margin:0">El diseñador no solo presenta información: crea situaciones donde se construye conocimiento.</p></div></div>
+<p class="src">Piaget (1970); Bruner (1960).</p>
+</section>
+
+<!-- 8 SOCIOCULTURAL -->
+<section class="slide" data-blk="1" data-min="25" data-part="1">
+<h2>Enfoque sociocultural: aprender con otros</h2>
+<p class="sub">El aprendizaje se relaciona con la interacción social, el lenguaje, la cultura y las herramientas disponibles.</p>
+<div class="cols">
+<figure style="margin:0"><svg viewBox="0 0 300 300" role="img" aria-label="Tres anillos concéntricos: lo que hago solo, lo que logro con ayuda (zona de desarrollo próximo) y lo que aún está fuera de alcance." style="max-width:min(100%,360px);height:auto;display:block;margin:auto">
+<circle cx="150" cy="150" r="142" fill="var(--soft)" stroke="var(--rule)"/><circle cx="150" cy="150" r="100" fill="var(--tint)" stroke="var(--red)" stroke-width="1.5"/><circle cx="150" cy="150" r="56" fill="var(--red)"/>
+<text x="150" y="36" text-anchor="middle" class="m">Aún fuera de alcance</text><text x="150" y="86" text-anchor="middle">Con ayuda: ZDP</text>
+<text x="150" y="146" text-anchor="middle" class="w">Lo que hago</text><text x="150" y="164" text-anchor="middle" class="w">por mi cuenta</text></svg>
+<figcaption class="src" style="margin-top:.3em">Zona de desarrollo próximo (Vygotsky, 1978).</figcaption></figure>
+<div><div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-users"/></svg><div><h3>Vygotsky (1978)</h3><p>La zona de desarrollo próximo es la distancia entre lo que alguien hace solo y lo que logra con la orientación de una persona más experta.</p></div></div><br>
+<div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-door"/></svg><div><h3>Lave y Wenger (1991)</h3><p>Aprendizaje situado: el conocimiento se construye al participar en actividades socialmente organizadas y en comunidades de práctica.</p></div></div><br>
+<div class="pan"><h3>Decisiones de diseño</h3><ul class="sq" style="margin:0"><li>Actividades colaborativas y entre pares.</li><li>Acompañamiento y andamiaje que se retira poco a poco.</li><li>Situaciones auténticas y contexto reconocible.</li></ul></div></div></div>
+<p class="src">Vygotsky (1978); Lave y Wenger (1991).</p>
+</section>
+
+<!-- 9 ANDRAGOGIA -->
+<section class="slide" data-blk="1" data-min="28" data-part="1">
+<h2>Andragogía: la persona adulta como protagonista</h2>
+<div class="def"><p><b>Andragogía.</b> Enfoque que estudia cómo aprenden las personas adultas y orienta su educación: parte de que son autónomas, aportan experiencia y aprenden mejor cuando lo aprendido tiene utilidad inmediata (Knowles et al., 2015).</p></div>
+<p class="sub">Seis supuestos sobre quien aprende y la decisión de diseño que sugiere cada uno.</p>
+<div class="grid">
+<div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-bulb"/></svg><div><h3>Necesidad de saber</h3><p>Explicar para qué sirve lo que se aprende antes de empezar.</p></div></div>
+<div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-user"/></svg><div><h3>Autoconcepto autodirigido</h3><p>Ofrecer elección y control sobre el proceso.</p></div></div>
+<div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-layers"/></svg><div><h3>Experiencia previa</h3><p>Usarla como recurso: reconocer la experiencia profesional y personal.</p></div></div>
+<div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-compass"/></svg><div><h3>Disposición a aprender</h3><p>Vincular con las tareas reales del rol de cada persona.</p></div></div>
+<div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-target"/></svg><div><h3>Orientación a problemas</h3><p>Partir de problemas relevantes y favorecer la aplicación inmediata.</p></div></div>
+<div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-loop"/></svg><div><h3>Motivación interna</h3><p>Dar sentido, crecimiento y flexibilidad en el recorrido.</p></div></div>
+</div>
+<div class="pan red" style="margin-top:1.3rem"><p style="margin:0"><b>Idea clave.</b> La experiencia previa no es un obstáculo ni un elemento secundario: es un recurso fundamental para construir nuevos aprendizajes. Se aplica con criterio: no todas las personas adultas aprenden igual en todos los contextos.</p></div>
+<p class="src">Knowles et al. (2015). La nota final es una precisión de la facilitación.</p>
+</section>
+
+<!-- 10 AUTODIRIGIDO -->
+<section class="slide" data-blk="1" data-min="31" data-part="1">
+<h2>Aprendizaje autodirigido y a lo largo de la vida</h2>
+<p class="sub">Quien aprende toma la iniciativa; el diseño crea las condiciones para que lo haga.</p>
+<div class="cols">
+<div>
+<div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-user"/></svg><div><h3>Knowles (1975)</h3><p>La persona toma la iniciativa, con o sin ayuda, para diagnosticar sus necesidades, formular metas, identificar recursos, elegir estrategias y evaluar resultados.</p></div></div><br>
+<div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-loop"/></svg><div><h3>Zimmerman (2002)</h3><p>El aprendizaje autorregulado es cíclico: se planifica, se ejecuta y se reflexiona, y lo aprendido ajusta el siguiente ciclo.</p></div></div><br>
+<div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-cap"/></svg><div><h3>Delors (1996)</h3><p>La educación a lo largo de la vida se apoya en cuatro pilares: aprender a conocer, a hacer, a vivir juntos y a ser.</p></div></div></div>
+<div>
+<ol class="flow" style="margin-top:0" aria-label="Ciclo de autorregulación"><li>Antes: planificar</li><li>Durante: ejecutar</li><li>Después: reflexionar</li></ol>
+<div class="pan"><h3>Decisiones de diseño en cada fase</h3>
+<ul class="sq" style="margin:0"><li><b>Antes.</b> Contrato de aprendizaje: metas, recursos y evidencias elegidos por cada persona.</li><li><b>Durante.</b> Opciones de formato, ritmo y recursos; ejemplos de desempeño.</li><li><b>Después.</b> Autoevaluación y retroalimentación que alimenten el siguiente ciclo.</li></ul></div>
+<p class="mut" style="margin-top:.8em;font-size:.86em">Deci y Ryan (2000): la autonomía, la competencia y la relación sostienen la motivación.</p></div></div>
+<p class="src">Knowles (1975); Zimmerman (2002); Delors (1996); Deci y Ryan (2000). Las decisiones de diseño por fase son una síntesis para el diplomado.</p>
+</section>
+
+<!-- 11 AUTORES -->
+<section class="slide" data-blk="1" data-min="34" data-part="1">
+<h2>Otras voces que sostienen el LXD</h2>
+<p class="sub">No pertenecen a una misma escuela; cada una explica una dimensión distinta del aprendizaje. Elige un autor.</p>
+<div class="tabs" id="ft" role="group" aria-label="Filtrar por dimensión"></div>
+<div class="cols" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))">
+<div class="ex" id="ex"></div>
+<div class="pan red det" id="ad" aria-live="polite"></div></div>
+<p class="src">Dewey (1938); Ausubel (1968); Kolb (1984); Sweller (1988); Mayer (2021); Bandura (1977); Deci y Ryan (2000); Norman (2013); Meyer et al. (2014); CAST (2024).</p>
+</section>
+
+<!-- 12 CICLO -->
+<section class="slide" data-blk="1" data-min="36" data-part="2">
+<h2>El ciclo general del módulo</h2>
+<p class="sub">Cada sesión responde a una pregunta guía y produce un artefacto. Selecciona una pregunta.</p>
+<div class="st" id="st" role="tablist" aria-label="Etapas del ciclo"></div>
+<div class="ax"><button id="axb" role="tab" aria-selected="false" aria-controls="cd">Accesibilidad, inclusión y DUA: eje transversal (sesiones 3 a 5)</button></div>
+<div class="pan det" id="cd" style="margin-top:.7rem" aria-live="polite"></div>
+<p class="src">Ruta metodológica de la fundamentación pedagógica del LXD y programa del Módulo 1. El resultado de cada prueba vuelve a cualquier etapa: el ciclo es iterativo.</p>
+</section>
+
+<!-- 13 EJEMPLO -->
+<section class="slide" data-blk="1" data-min="41" data-part="2">
+<h2>Un mismo tema, dos puntos de partida</h2>
+<p class="sub">Ejemplo ilustrativo: curso en línea sobre evaluación formativa para docentes en servicio.</p>
+<div class="cols">
+<div class="pan"><h3>Parte del contenido</h3><ul class="sq" style="margin:0"><li>Cuatro módulos con lecturas y videos largos.</li><li>Un foro para dudas generales.</li><li>Examen final de opción múltiple.</li><li>Mismo recorrido para todas las personas.</li></ul></div>
+<div class="pan red"><h3>Parte de las personas</h3>
+<ul class="sq" style="margin:0"><li><b>Entrevistas previas</b> a docentes para conocer su tiempo y su contexto (diseño centrado en las personas).</li><li><b>Casos de su propia aula</b> como punto de partida (andragogía).</li><li><b>Contrato de aprendizaje</b> con metas y evidencias elegidas (autodirigido).</li><li><b>Revisión en parejas</b> con andamiaje (sociocultural).</li><li><b>Videos breves</b> con apoyo visual para no sobrecargar (Sweller; Mayer).</li><li><b>Aplicar en clase y reflexionar</b> antes de la siguiente unidad (Kolb).</li><li><b>Varios formatos</b> y subtítulos (DUA).</li></ul></div></div>
+<p class="src">Ejemplo elaborado para esta exposición. Fundamentos: Knowles et al. (2015); Vygotsky (1978); Sweller (1988); Mayer (2021); Kolb (1984); Meyer et al. (2014).</p>
+</section>
+
+<!-- 14 CIERRE -->
+<section class="slide" data-blk="1" data-min="44" data-part="3">
+<h2>Diálogo y cierre</h2>
+<div class="tm" data-m="180"></div>
+<div class="cols">
+<div><h3>Para conversar</h3><ul class="sq"><li>¿Qué principio de hoy cambiaría primero algo en un curso que imparten o toman?</li><li>¿En su diseño actual, la persona aparece al inicio o al final?</li><li>¿Qué evidencia tienen de lo que necesitan y sienten quienes aprenden?</li></ul></div>
+<div class="pan red"><h3>La pregunta que orienta el diplomado</h3><p class="q" style="margin:0">No solo qué queremos que las personas aprendan, sino qué experiencias necesitan vivir para comprender, construir, aplicar y transformar el conocimiento.</p></div></div>
+<div class="it" style="margin-top:1.2rem"><svg class="ic" viewBox="0 0 48 48"><use href="#i-search"/></svg><div><h3>Sigue: investigación de personas</h3><p>Pasamos de la teoría a los datos: técnicas de investigación y construcción de la Learner Persona.</p></div></div>
+<p class="src">Fundamentación pedagógica del LXD, narrativa integradora.</p>
+</section>
+
+<!-- INV 1 -->
+<section class="slide" data-blk="2" data-min="0">
+<p class="bk"><b>Bloque 3 · 40 min</b>Investigación de personas</p>
+<h2>Qué queremos saber de quienes aprenden</h2>
+<p class="sub">Características, necesidades, motivaciones y expectativas en entornos digitales. Selecciona una dimensión.</p>
+<div class="tabs" id="tqi" role="group" aria-label="Dimensiones"></div>
+<div class="exg"><div class="pan red det" id="tqd" aria-live="polite"></div>
+<div class="pan"><h3>No eres la persona para la que diseñas</h3><p>Quien diseña suele pertenecer a otro grupo y mira el diseño con otros ojos. La investigación permite pensar en el estudiante y no por el estudiante, trabajar con datos en lugar de suposiciones y formular resultados de aprendizaje relevantes (Floor, 2023).</p><p class="mut" style="margin:0">En la andragogía, además, la experiencia previa y la necesidad de saber para qué sirve lo aprendido son clave (Knowles et al., 2015).</p></div></div>
+<p class="src">Floor (2023); Knowles et al. (2015); Deci y Ryan (2000). Las preguntas de ejemplo son una propuesta para la sesión.</p>
+</section>
+
+<!-- INV 2 -->
+<section class="slide" data-blk="2" data-min="5">
+<p class="bk"><b>Bloque 3 · 40 min</b>Investigación de personas</p>
+<h2>Técnicas de investigación</h2>
+<p class="sub">Se combinan varias, según el tiempo, el acceso y la pregunta que se quiere responder (Floor, 2023).</p>
+<div class="tabs" id="ttec" role="group" aria-label="Técnicas"></div>
+<div class="pan red det" id="ttd" aria-live="polite"></div>
+<p class="src">Floor (2023), capítulo de investigación. La técnica de análisis de necesidades se plantea aquí como síntesis de los datos disponibles; es una formulación del programa.</p>
+</section>
+
+<!-- INV 3 -->
+<section class="slide" data-blk="2" data-min="15">
+<p class="bk"><b>Bloque 3 · 40 min</b>Investigación de personas</p>
+<h2>Ética y consentimiento</h2>
+<p class="sub">Investigar a personas reales implica responsabilidades antes, durante y después. Marca lo que tu equipo garantizará.</p>
+<div class="exg"><div><ul class="ckl" data-ck="ck1">
+<li><label><input type="checkbox"> Explico con claridad el propósito del estudio y cómo se usarán los datos.</label></li>
+<li><label><input type="checkbox"> La participación es voluntaria y puede retirarse en cualquier momento.</label></li>
+<li><label><input type="checkbox"> Obtengo el consentimiento antes de empezar (y para grabar, si aplica).</label></li>
+<li><label><input type="checkbox"> Protejo la identidad: uso seudónimos y no publico datos que identifiquen.</label></li>
+<li><label><input type="checkbox"> Recojo solo los datos necesarios y los guardo de forma segura.</label></li>
+<li><label><input type="checkbox"> Evito poner en riesgo o presionar a participantes con relación de dependencia (por ejemplo, mis propios estudiantes).</label></li>
+<li><label><input type="checkbox"> Cuido que la invitación y los instrumentos sean accesibles.</label></li>
+<li><label><input type="checkbox"> Devuelvo los resultados y valido con las personas cómo las represento.</label></li></ul>
+<p class="ckc" id="ck1o" aria-live="polite">0 de 8</p></div>
+<div class="pan"><h3>Modelo breve de consentimiento</h3><p id="cns" style="font-size:.88em">Estoy realizando una actividad de formación para conocer cómo aprenden las personas en entornos digitales. Te invito a una conversación de unos 20 minutos. Tu participación es voluntaria y puedes detenerla cuando quieras. Usaré lo que compartas solo para este ejercicio, sin tu nombre ni datos que te identifiquen. ¿Aceptas participar? ¿Te parece bien que tome notas?</p><button id="cnsB">Copiar texto</button> <span class="mut" id="cnsO" style="font-size:.8em"></span>
+<p class="mut" style="font-size:.8em;margin:.8em 0 0">Adáptalo a la normativa de tu institución sobre protección de datos y a los lineamientos de ética de la investigación educativa (BERA, 2018).</p></div></div>
+<p class="src">BERA (2018); Floor (2023). El texto de consentimiento es un modelo ilustrativo, no un documento legal.</p>
+</section>
+
+<!-- INV 4 -->
+<section class="slide" data-blk="2" data-min="23">
+<p class="bk"><b>Bloque 3 · 40 min</b>Investigación de personas</p>
+<h2>Caso simulado: datos de un curso en línea para docentes</h2>
+<div class="tms"><div class="tm" data-m="720" data-l="Análisis en parejas"></div></div>
+<div class="exg">
+<div><div class="pan red"><h3>Contexto</h3><p style="font-size:.88em">Una universidad rediseñará un curso en línea de «Evaluación formativa» para docentes de licenciatura. Se recopilaron <b>8 entrevistas</b>, una <b>encuesta (n = 48)</b>, <b>notas de observación</b> de 3 sesiones piloto y datos de la plataforma.</p></div>
+<div class="pan" style="margin-top:.8rem"><h3>Consigna (12 min)</h3><ol class="sq" style="list-style:decimal;padding-left:1.2em;margin:0"><li>Lean los tres conjuntos de datos.</li><li>Subrayen tres hallazgos que les sorprendan.</li><li>Anoten una pregunta que los datos no responden.</li></ol></div></div>
+<div><div class="tabs" id="dsT" role="group" aria-label="Conjuntos de datos"></div><div class="pan" id="dsD" style="max-height:26em;overflow:auto" aria-live="polite"></div></div></div>
+<p class="src">Caso y datos ficticios, elaborados para la práctica. No corresponden a personas ni instituciones reales.</p>
+</section>
+
+<!-- PRA 1 -->
+<section class="slide" data-blk="3" data-min="0">
+<p class="bk"><b>Bloque 4 · 40 min</b>Práctica guiada</p>
+<h2>Agrupación de hallazgos (affinity mapping)</h2>
+<p class="sub">Se agrupan notas con ideas similares y los grupos surgen de los datos, no de categorías definidas antes (Beyer y Holtzblatt, 1998).</p>
+<ol class="flow" aria-label="Pasos"><li>1. Una idea por nota</li><li>2. Agrupar en silencio</li><li>3. Nombrar cada grupo</li><li>4. Priorizar</li><li>5. Redactar hallazgos</li></ol>
+<div class="cols"><div class="pan"><h3>Reglas del juego</h3><ul class="sq" style="margin:0"><li>Una idea por nota; lo más concreto posible.</li><li>Primero agrupen, después nombren; los nombres son frases, no una sola palabra.</li><li>Una nota puede cambiar de grupo; no fuerces las que no encajan.</li><li>Cuiden que haya datos de más de una fuente en cada grupo.</li></ul></div>
+<div class="pan red"><h3>Tiempos de la práctica</h3><p style="margin:0">Presentación de la técnica: 5 min · Agrupación en el tablero: 20 min · De los grupos a los hallazgos: 15 min.</p></div></div>
+<p class="src">Beyer y Holtzblatt (1998); Floor (2023). Adaptación para la sesión.</p>
+</section>
+
+<!-- PRA 2 -->
+<section class="slide" data-blk="3" data-min="5">
+<p class="bk"><b>Bloque 4 · 40 min</b>Práctica guiada</p>
+<h2>Tablero de agrupación con notas del caso</h2>
+<div class="tm" data-m="1200" data-l="Agrupar y nombrar"></div>
+<div class="afb"><button id="afS">Ver agrupación sugerida</button><button id="afR">Reiniciar</button><input type="text" id="afX" placeholder="Nueva nota" aria-label="Nueva nota" style="min-width:12em"><button id="afN">Agregar nota</button><span class="sl" id="afC"></span></div>
+<div class="afb" id="afbar" aria-live="polite"><span class="sl">Selecciona una nota y elige su grupo.</span></div>
+<div class="afw"><div><p class="hd2">Notas sin agrupar</p><div class="afp" id="afp"></div></div>
+<div class="afc" id="afg"></div></div>
+<p class="src">Notas elaboradas a partir del caso simulado. Los nombres de los grupos se pueden editar.</p>
+</section>
+
+<!-- PRA 3 -->
+<section class="slide" data-blk="3" data-min="25">
+<p class="bk"><b>Bloque 4 · 40 min</b>Práctica guiada</p>
+<h2>De los grupos a los hallazgos</h2>
+<div class="tm" data-m="600" data-l="Redactar tres hallazgos"></div>
+<p class="sub">Un hallazgo une a una persona, una necesidad y la evidencia que la respalda.</p>
+<div class="exg"><div><div style="display:grid;gap:.5rem;max-width:36em">
+<label class="hd2" for="hbA">Quién (persona o segmento)</label><input type="text" id="hbA" placeholder="Docentes universitarios con carga mixta">
+<label class="hd2" for="hbB">Necesita…</label><input type="text" id="hbB" placeholder="módulos breves y flexibles">
+<label class="hd2" for="hbC">Porque… (evidencia)</label><input type="text" id="hbC" placeholder="estudian de noche, con menos de 2 h a la semana, y el abandono se concentra en la semana 3"></div>
+<div style="margin-top:.6rem"><button id="hbE">Usar ejemplo del caso</button> <button id="hbK">Copiar frase</button> <span class="mut" id="hbO" style="font-size:.8em"></span></div></div>
+<div class="pan red"><h3>Tu hallazgo</h3><p class="q" id="hbR" style="margin:0;max-width:none" aria-live="polite">Completa los tres campos.</p></div></div>
+<div class="pan" style="margin-top:1rem"><h3>Un buen hallazgo…</h3><ul class="sq" style="margin:0"><li>Se apoya en datos de más de una fuente.</li><li>Describe una necesidad, no una solución.</li><li>Aclara el porqué (el motivo detrás de la conducta).</li></ul></div>
+<p class="src">Estructura de redacción propuesta para la sesión (elaboración propia), con base en el trabajo de síntesis del diseño centrado en las personas (Floor, 2023).</p>
+</section>
+
+<!-- TAL 1 -->
+<section class="slide" data-blk="4" data-min="0">
+<p class="bk"><b>Bloque 5 · 70 min</b>Taller</p>
+<h2>Taller: Learner Persona, mapa de empatía y matriz</h2>
+<p class="sub">Trabajo en equipos con los hallazgos de la práctica. Cada etapa tiene su tiempo.</p>
+<div class="tms"><div class="tm" data-m="300" data-l="Organización"></div><div class="tm" data-m="1500" data-l="Learner Persona"></div><div class="tm" data-m="900" data-l="Mapa de empatía"></div><div class="tm" data-m="900" data-l="Matriz BMO"></div><div class="tm" data-m="600" data-l="Revisión"></div></div>
+<ol class="flow" style="margin-top:1rem"><li>Organización · 5</li><li>Learner Persona · 25</li><li>Mapa de empatía · 15</li><li>Matriz de barreras, motivadores y oportunidades · 15</li><li>Revisión · 10</li></ol>
+<div class="cols"><div class="pan"><h3>Roles sugeridos</h3><ul class="sq" style="margin:0"><li><b>Facilitación:</b> cuida tiempos y participación.</li><li><b>Redacción:</b> captura en la plantilla.</li><li><b>Datos:</b> verifica que cada afirmación tenga evidencia.</li><li><b>Voz:</b> presentará al final.</li></ul></div>
+<div class="pan red"><h3>Productos de la sesión</h3><ul class="sq" style="margin:0"><li>Learner Persona</li><li>Mapa de empatía</li><li>Matriz de barreras, motivadores y oportunidades</li></ul><p class="mut" style="margin:.6em 0 0;font-size:.84em">Se elaboran en las plantillas visuales del taller.</p></div></div>
+<p class="src">Tiempos en minutos. Total: 70 min.</p>
+</section>
+
+<!-- TAL 2 -->
+<section class="slide" data-blk="4" data-min="5">
+<p class="bk"><b>Bloque 5 · 70 min</b>Taller</p>
+<h2>Anatomía de la Learner Persona</h2>
+<div class="def"><p><b>Learner Persona.</b> Representación ficticia, pero basada en datos reales, de un grupo de estudiantes con metas, necesidades y conductas similares. Permite diseñar pensando en una persona concreta y no en un «estudiante promedio» (Floor, 2023).</p></div>
+<p class="sub">Ejemplo ilustrativo construido con el caso simulado. Selecciona cada sección para ver cómo completarla.</p>
+<div class="exg"><div class="pcard"><div class="hd"><svg class="ic" viewBox="0 0 48 48"><use href="#i-user"/></svg><div><h3 style="margin:0">Marisol R. (personaje ficticio)</h3><span class="mut" style="font-size:.8em">38 años · docente de licenciatura</span></div></div><div class="gr" id="ppg"></div></div>
+<div class="pan red det" id="ppd" aria-live="polite"></div></div>
+<p class="src">Floor (2023); Pruitt y Grudin (2003). Persona ficticia basada en el caso simulado; no representa a una persona real.</p>
+</section>
+
+<!-- TAL 3 -->
+<section class="slide" data-blk="4" data-min="30">
+<p class="bk"><b>Bloque 5 · 70 min</b>Taller</p>
+<h2>Mapa de empatía</h2>
+<div class="def"><p><b>Mapa de empatía.</b> Herramienta visual que organiza lo que se sabe de quien aprende (lo que piensa, siente, dice, hace, ve y escucha) para desarrollar una comprensión y una empatía compartidas dentro del equipo (Gray et al., 2010; Floor, 2023).</p></div>
+<div class="tabs" id="emT" role="group" aria-label="Versión del mapa"></div>
+<div class="exg"><div><div class="emg" id="emg"></div></div><div class="pan red det" id="emd" aria-live="polite"></div></div>
+<p class="src">Gray et al. (2010), mapa de empatía original; Floor (2023), versión para estudiantes. Ejemplos tomados del caso simulado.</p>
+</section>
+
+<!-- TAL 4 -->
+<section class="slide" data-blk="4" data-min="45">
+<p class="bk"><b>Bloque 5 · 70 min</b>Taller</p>
+<h2>Matriz de barreras, motivadores y oportunidades</h2>
+<div class="def"><p><b>Matriz de barreras, motivadores y oportunidades.</b> Tabla que ordena los hallazgos de la investigación en lo que dificulta el aprendizaje (barreras), lo que lo impulsa (motivadores) y las oportunidades de diseño que responden a ambos.</p></div>
+<p class="sub">Cada fila parte de un hallazgo con evidencia y termina en una oportunidad de diseño.</p>
+<div class="afb"><button id="mxB" aria-pressed="false">Ocultar ejemplo</button></div>
+<div class="scr"><table class="mx" id="mxT"></table></div>
+<div class="cols" style="margin-top:.8rem"><div class="pan"><h3>Cómo redactar</h3><ul class="sq" style="margin:0"><li><b>Barrera:</b> lo que dificulta o impide aprender (de la persona o del entorno).</li><li><b>Motivador:</b> lo que impulsa y sostiene el esfuerzo.</li><li><b>Oportunidad:</b> una dirección de diseño, no una herramienta ni una solución cerrada.</li></ul></div>
+<div class="pan red"><h3>Pregunta de control</h3><p style="margin:0">¿Qué cambiaría en la experiencia de aprendizaje si tomáramos en serio esta fila?</p></div></div>
+<p class="src">Elaboración propia a partir del caso simulado; Floor (2023), preguntas sobre lo que motiva y desmotiva a aprender.</p>
+</section>
+
+<!-- TAL 5 -->
+<section class="slide" data-blk="4" data-min="60">
+<p class="bk"><b>Bloque 5 · 70 min</b>Taller</p>
+<h2>Revisión antes de presentar</h2>
+<div class="tm" data-m="600" data-l="Revisión del equipo"></div>
+<div class="cols"><div><h3>Learner Persona</h3><ul class="ckl" data-ck="ck2"><li><label><input type="checkbox"> Se basa en datos: citas, cifras u observaciones.</label></li><li><label><input type="checkbox"> Evita estereotipos en nombre, imagen y supuestos.</label></li><li><label><input type="checkbox"> Incluye meta, motivadores, barreras y necesidades de acceso.</label></li></ul>
+<h3 style="margin-top:.8rem">Mapa de empatía</h3><ul class="ckl" data-ck="ck2"><li><label><input type="checkbox"> Cada área tiene evidencia o una cita.</label></li><li><label><input type="checkbox"> Refleja pensamiento, conducta y emoción.</label></li></ul></div>
+<div><h3>Matriz</h3><ul class="ckl" data-ck="ck2"><li><label><input type="checkbox"> Cada fila parte de un hallazgo con evidencia.</label></li><li><label><input type="checkbox"> Las oportunidades responden a barreras concretas.</label></li><li><label><input type="checkbox"> Se consideró la accesibilidad y la inclusión.</label></li></ul>
+<h3 style="margin-top:.8rem">Conjunto</h3><ul class="ckl" data-ck="ck2"><li><label><input type="checkbox"> Se marcó lo que falta validar con personas reales.</label></li><li><label><input type="checkbox"> Los tres productos son coherentes entre sí.</label></li></ul>
+<p class="ckc" id="ck2o" aria-live="polite">0 de 10</p></div></div>
+<p class="src">Criterios sugeridos para la revisión. La rúbrica completa y la escala de 5 a 10 están en las diapositivas de evaluación (anexo).</p>
+</section>
+
+<!-- CIE 1 -->
+<section class="slide" data-blk="5" data-min="0">
+<p class="bk"><b>Bloque 6 · 20 min</b>Cierre</p>
+<h2>Presentación breve y retroalimentación cruzada</h2>
+<div class="tms"><div class="tm" data-m="180" data-l="Presenta el equipo"></div><div class="tm" data-m="120" data-l="Retroalimenta otro equipo"></div></div>
+<div class="cols" style="margin-top:.8rem"><div><h3>Qué presentar (3 min)</h3><ul class="sq"><li>La persona: quién es y qué necesita.</li><li>Un hallazgo y la evidencia que lo respalda.</li><li>Una oportunidad de diseño.</li></ul></div>
+<div class="pan red"><h3>Cómo retroalimentar (2 min)</h3><ul class="sq" style="margin:0"><li><b>Reconozco…</b> lo que está bien sustentado.</li><li><b>Me pregunto…</b> qué dato falta o qué supuesto aparece.</li><li><b>Sugiero…</b> un ajuste concreto.</li></ul></div></div>
+<p class="src">Dinámica de la sesión. Cada equipo presenta y recibe comentarios de otro equipo; ajusta los tiempos según el número de equipos.</p>
+</section>
+
+<!-- CIE 2 -->
+<section class="slide" data-blk="5" data-min="15">
+<p class="bk"><b>Bloque 6 · 20 min</b>Cierre</p>
+<h2>Reflexión de cierre</h2>
+<p class="sub">Mirar cómo pensamos es parte de aprender: es el momento de la observación reflexiva del ciclo experiencial.</p>
+<div class="grid" style="margin-top:1rem">
+<div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-user"/></svg><div><h3>¿Qué cambió?</h3><p>¿Cómo veía a quien aprende al empezar la sesión y cómo lo veo ahora?</p></div></div>
+<div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-search"/></svg><div><h3>¿Qué me sorprendió?</h3><p>¿Qué dato contradijo lo que yo suponía?</p></div></div>
+<div class="it"><svg class="ic" viewBox="0 0 48 48"><use href="#i-loop"/></svg><div><h3>¿Qué haré distinto?</h3><p>¿Qué decisión de diseño revisaré a partir de lo que hoy aprendí?</p></div></div></div>
+<div class="def" style="margin-top:1rem"><p>Escribe una frase con tu respuesta a una de las tres preguntas y compártela en el tablero o en el chat.</p></div>
+<p class="src">Flavell (1979); Kolb (1984). Ver la diapositiva sobre los cuatro elementos del aprendizaje experiencial.</p>
+</section>
+
+<!-- CIE 3 -->
+<section class="slide" data-blk="5" data-min="17">
+<p class="bk"><b>Bloque 6 · 20 min</b>Cierre</p>
+<h2>Trabajo asincrónico y evidencia</h2>
+<div class="cols"><div class="pan red"><h3>Trabajo asincrónico</h3><p>Aplicar <b>3 entrevistas</b> y <b>1 encuesta</b> a personas reales del contexto elegido por el equipo, para validar y ajustar la persona antes de la sesión 2.</p><ul class="sq" style="margin:0"><li>Definan a quiénes entrevistarán y por qué.</li><li>Preparen pocos temas y preguntas abiertas.</li><li>Pidan consentimiento y protejan la identidad.</li><li>Registren citas y contrasten con su persona.</li><li>Anoten qué ajustaron y qué se confirmó.</li></ul></div>
+<div><div class="pan"><h3>Evidencia de la sesión</h3><ul class="sq" style="margin:0"><li>Learner Persona</li><li>Mapa de empatía</li><li>Matriz de barreras, motivadores y oportunidades</li></ul></div>
+<div class="it" style="margin-top:1rem"><svg class="ic" viewBox="0 0 48 48"><use href="#i-route"/></svg><div><h3>Sigue: sesión 2</h3><p>Journey Map: ¿qué recorrido y experiencia vivirá?</p></div></div></div></div>
+<p class="src">Programa del Módulo 1. Fundamentos del aprendizaje digital.</p>
+</section>
+
+<!-- EVAL 1 -->
+<section class="slide" data-min="0">
+<p class="bk"><b>Anexo</b>Evaluación</p>
+<h2>¿Cómo se evaluará la sesión?</h2>
+<div class="def"><p>Se evalúa la <b>evidencia del equipo</b> (Learner Persona, mapa de empatía y matriz) con una rúbrica de cinco criterios. Cada criterio se redacta con verbos en infinitivo según la taxonomía de Bloom: cuanto más alto el nivel cognitivo del verbo, mayor el nivel de desempeño. Cada nivel se convierte a la escala de <b>5 a 10</b>; la calificación es el promedio ponderado.</p></div>
+<div class="lv"><div><b class="n">10</b><h3>Excelente</h3><p class="w" style="font:600 .78em var(--sans);color:var(--taupe);margin-bottom:.3em">Bloom: Evaluar · Crear</p><p>Cumple el criterio con profundidad y evidencia explícita.</p></div><div><b class="n">8</b><h3>Satisfactorio</h3><p class="w" style="font:600 .78em var(--sans);color:var(--taupe);margin-bottom:.3em">Bloom: Analizar · Aplicar</p><p>Cumple con claridad; hay detalles menores por mejorar.</p></div><div><b class="n">6</b><h3>En desarrollo</h3><p class="w" style="font:600 .78em var(--sans);color:var(--taupe);margin-bottom:.3em">Bloom: Comprender</p><p>Cumple de forma parcial; faltan evidencia o precisión.</p></div><div><b class="n">5</b><h3>Insuficiente</h3><p class="w" style="font:600 .78em var(--sans);color:var(--taupe);margin-bottom:.3em">Bloom: Recordar</p><p>No cumple el criterio o no hay evidencia.</p></div></div>
+<div class="cols"><div class="pan red"><h3>Cálculo</h3><p style="margin:0">Calificación = Σ (valor del nivel × ponderación del criterio). Se reporta con un decimal. La calificación mínima aprobatoria es <b>6.0</b>.</p></div>
+<div class="pan"><h3>Ponderación</h3><ul class="sq" style="margin:0"><li>Sustento en datos · 25 %</li><li>Necesidades, motivaciones y expectativas · 25 %</li><li>Barreras, motivadores y oportunidades · 20 %</li><li>Mapa de empatía · 15 %</li><li>Claridad y presentación · 15 %</li></ul></div></div>
+<p class="src">Anderson y Krathwohl (2001), revisión de la taxonomía de Bloom. Rúbrica del Módulo 1 (niveles 4 a 1) convertida a la escala 5–10 como propuesta de equivalencia: 4 = 10, 3 = 8, 2 = 6, 1 = 5. Se comparte con los equipos al inicio de la sesión.</p>
+</section>
+
+<!-- EVAL 2 -->
+<section class="slide" data-min="0">
+<p class="bk"><b>Anexo</b>Evaluación</p>
+<h2>Rúbrica de la Learner Persona</h2>
+<p style="margin:.2rem 0 .5rem;font-size:.9em">Cada nivel se redacta con un verbo en infinitivo de la taxonomía de Bloom. Selecciona un nivel por criterio para simular la calificación.</p>
+<div class="scr"><table class="rb" id="rbT"></table></div>
+<div class="rbs"><div class="gr" id="rbG" aria-live="polite">—</div><p id="rbM">Elige un nivel por criterio (0 de 5).</p><button id="rbR">Reiniciar</button></div>
+<p class="src">Rúbrica 1 del Módulo 1, redactada con verbos de Bloom (Anderson y Krathwohl, 2001); valores de la escala 5–10 como propuesta de equivalencia.</p>
+</section>
+
+<!-- 15 REFERENCIAS -->
+<section class="slide" data-min="0">
+<h2>Referencias</h2>
+<div class="cols refs" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr))">
+<div>
+<p>Anderson, L. W., &amp; Krathwohl, D. R. (Eds.). (2001). <i>A taxonomy for learning, teaching, and assessing: A revision of Bloom's taxonomy of educational objectives</i>. Longman.</p>
+<p>Ausubel, D. P. (1968). <i>Educational psychology: A cognitive view</i>. Holt, Rinehart and Winston.</p>
+<p>Bandura, A. (1977). <i>Social learning theory</i>. Prentice Hall.</p>
+<p>BERA. (2018). <i>Ethical guidelines for educational research</i> (4th ed.). British Educational Research Association. <a href="https://www.bera.ac.uk/publication/ethical-guidelines-for-educational-research-2018" target="_blank" rel="noopener">https://www.bera.ac.uk/publication/ethical-guidelines-for-educational-research-2018</a></p>
+<p>Beyer, H., &amp; Holtzblatt, K. (1998). <i>Contextual design: Defining customer-centered systems</i>. Morgan Kaufmann.</p>
+<p>Bruner, J. S. (1960). <i>The process of education</i>. Harvard University Press.</p>
+<p>CAST. (2024). <i>Universal Design for Learning Guidelines version 3.0</i>. <a href="https://udlguidelines.cast.org/" target="_blank" rel="noopener">https://udlguidelines.cast.org/</a></p>
+<p>Deci, E. L., &amp; Ryan, R. M. (2000). The "what" and "why" of goal pursuits: Human needs and the self-determination of behavior. <i>Psychological Inquiry, 11</i>(4), 227–268. <a href="https://doi.org/10.1207/S15327965PLI1104_01" target="_blank" rel="noopener">https://doi.org/10.1207/S15327965PLI1104_01</a></p>
+<p>Delors, J. (Ed.). (1996). <i>La educación encierra un tesoro: Informe a la UNESCO de la Comisión Internacional sobre la Educación para el Siglo XXI</i>. Ediciones UNESCO.</p>
+<p>Dewey, J. (1938). <i>Experience and education</i>. Macmillan.</p>
+<p>Flavell, J. H. (1979). Metacognition and cognitive monitoring: A new area of cognitive–developmental inquiry. <i>American Psychologist, 34</i>(10), 906–911. <a href="https://doi.org/10.1037/0003-066X.34.10.906" target="_blank" rel="noopener">https://doi.org/10.1037/0003-066X.34.10.906</a></p>
+<p>Floor, N. (2023). <i>This is learning experience design: What it is, how it works, and why it matters</i>. New Riders.</p>
+<p>Gray, D., Brown, S., &amp; Macanufo, J. (2010). <i>Gamestorming: A playbook for innovators, rulebreakers, and changemakers</i>. O'Reilly Media.</p>
+<p>Knowles, M. S. (1975). <i>Self-directed learning: A guide for learners and teachers</i>. Association Press.</p>
+<p>Knowles, M. S., Holton, E. F., III, &amp; Swanson, R. A. (2015). <i>The adult learner: The definitive classic in adult education and human resource development</i> (8th ed.). Routledge.</p>
+<p>Kolb, D. A. (1984). <i>Experiential learning: Experience as the source of learning and development</i>. Prentice Hall.</p></div>
+<div>
+<p>Lave, J., &amp; Wenger, E. (1991). <i>Situated learning: Legitimate peripheral participation</i>. Cambridge University Press.</p>
+<p>Mayer, R. E. (2021). <i>Multimedia learning</i> (3rd ed.). Cambridge University Press.</p>
+<p>Meyer, A., Rose, D. H., &amp; Gordon, D. (2014). <i>Universal design for learning: Theory and practice</i>. CAST Professional Publishing.</p>
+<p>Norman, D. (2013). <i>The design of everyday things: Revised and expanded edition</i>. Basic Books.</p>
+<p>Piaget, J. (1970). <i>Genetic epistemology</i>. Columbia University Press.</p>
+<p>Pruitt, J., &amp; Grudin, J. (2003). Personas: Practice and theory. En <i>Proceedings of the 2003 Conference on Designing for User Experiences</i> (pp. 1–15). ACM. <a href="https://doi.org/10.1145/997078.997089" target="_blank" rel="noopener">https://doi.org/10.1145/997078.997089</a></p>
+<p>Schmidt, M., &amp; Huang, R. (2022). Defining learning experience design: Voices from the field of learning design &amp; technology. In M. Schmidt, A. A. Tawfik, I. Jahnke, &amp; Y. Earnshaw (Eds.), <i>Learner and user experience research: An introduction for the field of learning design &amp; technology</i>. EdTech Books. <a href="https://edtechbooks.org/ux" target="_blank" rel="noopener">https://edtechbooks.org/ux</a></p>
+<p>Schön, D. A. (1983). <i>The reflective practitioner: How professionals think in action</i>. Basic Books.</p>
+<p>Sweller, J. (1988). Cognitive load during problem solving: Effects on learning. <i>Cognitive Science, 12</i>(2), 257–285. <a href="https://doi.org/10.1207/s15516709cog1202_4" target="_blank" rel="noopener">https://doi.org/10.1207/s15516709cog1202_4</a></p>
+<p>Vygotsky, L. S. (1978). <i>Mind in society: The development of higher psychological processes</i>. Harvard University Press.</p>
+<p>Zimmerman, B. J. (2002). Becoming a self-regulated learner: An overview. <i>Theory Into Practice, 41</i>(2), 64–70. <a href="https://doi.org/10.1207/s15430421tip4102_2" target="_blank" rel="noopener">https://doi.org/10.1207/s15430421tip4102_2</a></p></div></div>
+</section>
+</main>
+
+<footer class="ctl g">
+<div class="row"><button id="pv">Anterior</button><button id="nx">Siguiente</button><div class="seg" id="seg" role="group" aria-label="Bloques de la sesión"></div><span class="cnt" id="cnt"></span><button id="fs">Pantalla completa</button></div>
+</footer>
+
+<script>
+(function(){
+var S=[].slice.call(document.querySelectorAll('.slide')),i=0;
+var $=function(id){return document.getElementById(id)};
+var BL=[['Apertura',20],['Encuadre del LXD',50],['Investigación de personas',40],['Práctica guiada',40],['Taller',70],['Cierre',20]];
+var PE=[['Marco del LXD y su proceso',18],['Principios y fundamentos',18],['Ciclo del módulo',8],['Diálogo y cierre',6]];
+var seg=$('seg'),cnt=$('cnt');
+BL.forEach(function(p){var s=document.createElement('i');s.style.setProperty('--w',p[1]);s.title=p[0]+' · '+p[1]+' min';seg.appendChild(s)});
+function firstBy(attr,v){for(var j=0;j<S.length;j++){if(S[j].getAttribute(attr)===String(v))return j}return 0}
+var rt=$('route'),rt2=$('route2');
+PE.forEach(function(p,k){var b=document.createElement('button');b.style.setProperty('--w',p[1]);b.innerHTML='<b>'+p[0]+'</b><small>'+p[1]+' min</small>';b.onclick=function(){go(firstBy('data-part',k))};rt.appendChild(b)});
+BL.forEach(function(p,k){var b=document.createElement('button');b.style.setProperty('--w',p[1]);b.innerHTML='<b>'+(k+1)+'. '+p[0]+'</b><small>'+p[1]+' min</small>';b.onclick=function(){go(firstBy('data-blk',k))};rt2.appendChild(b)});
+function go(k){
+  i=Math.max(0,Math.min(S.length-1,k));
+  S.forEach(function(s,j){s.classList.toggle('on',j===i)});
+  var bk=S[i].getAttribute('data-blk');bk=bk===null?-1:+bk;
+  [].forEach.call(seg.children,function(el,j){el.className=(bk===j)?'on':(bk>j?'done':'')});
+  var m=S[i].getAttribute('data-min');
+  cnt.textContent=(i+1)+' de '+S.length+(bk>=0?' · '+BL[bk][0]+(m&&+m>0?' · min '+m:''):'');
+  try{history.replaceState(null,'','#d-'+(i+1))}catch(e){}
+  window.scrollTo(0,0);
+}
+$('nx').onclick=function(){go(i+1)};$('pv').onclick=function(){go(i-1)};
+$('fs').onclick=function(){try{(document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()).catch(function(){})}catch(e){}};
+document.addEventListener('keydown',function(e){if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;
+  if(e.key==='ArrowRight'||e.key==='PageDown')go(i+1);else if(e.key==='ArrowLeft'||e.key==='PageUp')go(i-1);
+  else if(e.key==='Home')go(0);else if(e.key==='End')go(S.length-1)});
+/* timers */
+[].forEach.call(document.querySelectorAll('.tm'),function(t){var m=+t.getAttribute('data-m'),l=m,iv=null;
+  var lb=t.getAttribute('data-l');t.innerHTML=(lb?'<span class="tl">'+lb+'</span>':'')+'<b></b><button>Iniciar</button><button>Reiniciar</button>';
+  var b=t.querySelector('b'),bs=t.querySelectorAll('button');
+  function dr(){b.textContent=('0'+Math.floor(l/60)).slice(-2)+':'+('0'+l%60).slice(-2)}dr();
+  bs[0].onclick=function(){if(iv){clearInterval(iv);iv=null;bs[0].textContent='Reanudar'}else{bs[0].textContent='Pausar';iv=setInterval(function(){if(l>0){l--;dr()}else{clearInterval(iv);iv=null;bs[0].textContent='Iniciar';t.classList.add('end')}},1000)}};
+  bs[1].onclick=function(){clearInterval(iv);iv=null;l=m;dr();bs[0].textContent='Iniciar';t.classList.remove('end')}});
+/* autores */
+var DIM=['Todas','Cognitivo','Social y contextual','Experiencial y significativo','Motivación y adultez','Diseño e inclusión'];
+var A=[
+['Dewey (1938)',3,'Experiencia, reflexión y continuidad educativa.','Cerrar cada actividad con una reflexión y enlazarla con la siguiente.'],
+['Piaget (1970)',1,'Construcción y reorganización del conocimiento.','Plantear desafíos que pongan a prueba lo que ya saben.'],
+['Bruner (1960)',1,'Descubrimiento y construcción de significados.','Abrir con preguntas e indagación antes de la explicación.'],
+['Vygotsky (1978)',2,'Mediación social, lenguaje y andamiaje.','Acompañar y retirar el apoyo de forma gradual; tareas en pareja.'],
+['Lave y Wenger (1991)',2,'Aprendizaje situado y comunidades de práctica.','Proponer tareas auténticas y participación en una comunidad.'],
+['Ausubel (1968)',3,'Aprendizaje significativo y conocimientos previos.','Activar saberes previos y usar organizadores conceptuales.'],
+['Kolb (1984)',3,'Ciclo de aprendizaje experiencial: experiencia concreta, observación reflexiva, conceptualización y experimentación.','Secuenciar vivir, observar, conceptualizar y aplicar.'],
+['Knowles et al. (2015)',4,'Autonomía y experiencia del aprendiz adulto.','Partir de problemas reales del rol profesional.'],
+['Sweller (1988)',1,'Gestión de la carga cognitiva.','Dosificar la información y evitar sobrecargas.'],
+['Mayer (2021)',1,'Diseño cognitivo de experiencias multimedia.','Integrar texto, imagen y audio con intención; quitar lo irrelevante.'],
+['Bandura (1977)',2,'Aprendizaje social, modelado y autoeficacia.','Mostrar ejemplos de desempeño y logros alcanzables.'],
+['Deci y Ryan (2000)',4,'Motivación: autonomía, competencia y relación.','Ofrecer elección, desafíos alcanzables y vínculos con otras personas.'],
+['Norman (2013)',5,'Diseño centrado en las personas y usabilidad.','Probar la navegación y las instrucciones con personas reales.'],
+['Meyer, Rose y Gordon (2014); CAST (2024)',5,'Diseño Universal para el Aprendizaje: múltiples medios de implicación, representación, y acción y expresión.','Incorporar la accesibilidad desde el origen del diseño, no como ajuste posterior.'],
+['Floor (2023); Schmidt y Huang (2022)',5,'Sistematización contemporánea y fundamentación humanista del LXD.','Investigar a las personas y mejorar con evidencia.']
+];
+var cur=0,sel=0,ft=$('ft'),ex=$('ex'),ad=$('ad');
+DIM.forEach(function(d,k){var b=document.createElement('button');b.textContent=d;b.setAttribute('aria-pressed',k===0);b.onclick=function(){cur=k;[].forEach.call(ft.children,function(x,j){x.setAttribute('aria-pressed',j===k)});sel=-1;rend()};ft.appendChild(b)});
+function rend(){ex.innerHTML='';var list=A.map(function(a,k){return k}).filter(function(k){return cur===0||A[k][1]===cur});
+  if(list.indexOf(sel)<0)sel=list[0];
+  list.forEach(function(k){var b=document.createElement('button');b.innerHTML='<b>'+A[k][0]+'</b>';b.setAttribute('aria-pressed',k===sel);b.onclick=function(){sel=k;rend()};ex.appendChild(b)});
+  var a=A[sel];ad.innerHTML='<h3>'+a[0]+'</h3><p><b>Aporta:</b> '+a[2]+'</p><p><b>En el diseño:</b> '+a[3]+'</p>'}
+rend();
+/* cuadrantes */
+var Q=[['Teoría del aprendizaje','Usa la teoría del aprendizaje para fortalecer tu diseño.','Disciplinas científicas sobre cómo aprenden las personas: psicología cognitiva, neurociencia y aprendizaje experiencial.'],
+['Aspectos humanos del diseño','Diseña el proceso y las actividades con un enfoque centrado en las personas.','Diseño de experiencia de usuario y de interacción: se definen las opciones, las decisiones y las acciones de quien aprende.'],
+['El aprendizaje puesto en práctica','Comprende cómo el aprendizaje se pone en práctica.','Docentes, formadores y diseño instruccional: conocen los sistemas y las fuerzas de las escuelas y empresas para las que se diseña.'],
+['Diseño orientado a objetivos','Diseña productos que apoyen a las personas a lograr sus metas.','Diseño tecnológico y gráfico: productos funcionales y atractivos, con la forma y la estructura adecuadas.']];
+var qb=document.querySelectorAll('#qd .q'),qd=$('qdet');
+function sq(k){[].forEach.call(qb,function(b,j){b.setAttribute('aria-pressed',j===k)});qd.innerHTML='<h3>'+Q[k][0]+'</h3><p><b>En la práctica:</b> '+Q[k][2]+'</p>'}
+[].forEach.call(qb,function(b,j){b.innerHTML='<b>'+Q[j][0]+'</b>'+Q[j][1];b.onclick=function(){sq(j)}});sq(0);
+/* experiencial */
+var E=[['Experiencia concreta','Involucrarse en una situación real: lo que se vive y se siente.','Casos, simulaciones y situaciones auténticas del contexto de las personas.'],
+['Observación reflexiva','Observar y pensar sobre lo vivido para darle sentido. Es un proceso interno: la reflexión pasa de «qué me pasó» a «cómo pienso y cómo aprendo».','Dar tiempo y estructura a la reflexión; no dejarla como un cierre opcional.'],
+['Conceptualización abstracta','Relacionar lo vivido con conceptos, modelos y teorías que lo explican.','Modelos y marcos que se puedan aplicar: la teoría se explica con la práctica y la práctica con la teoría.'],
+['Experimentación activa','Decidir y actuar: probar lo comprendido en una situación nueva. Es un proceso externo que genera información.','Prácticas, prototipos y retos aplicados, con retroalimentación pronta.']];
+var eb=document.querySelectorAll('#exd,.cyc [data-e]'),ed=$('exd');
+function se(k){[].forEach.call(document.querySelectorAll('[data-e]'),function(g){g.classList.toggle('on',+g.getAttribute('data-e')===k)});
+ var h='<h3>'+E[k][0]+'</h3><p>'+E[k][1]+'</p><p><b>En el diseño:</b> '+E[k][2]+'</p>';
+ if(k===1)h='<span class="chip">Proceso metacognitivo</span>'+h+'<div class="meta"><p style="margin-bottom:.3em"><b>Metacognición:</b> pensar sobre el propio pensamiento (Flavell, 1979). Al reflexionar, quien aprende:</p><ul class="sq"><li><b>Se anticipa:</b> ¿qué sé de esta tarea y cómo la abordaré?</li><li><b>Se monitorea:</b> ¿lo estoy comprendiendo? ¿qué estrategia uso?</li><li><b>Se evalúa:</b> ¿qué funcionó, por qué y qué haré distinto?</li></ul><p class="mut" style="margin:0;font-size:.86em">Reflexión en la acción y sobre la acción (Schön, 1983). Diseño: diarios, preguntas guía, autoevaluación con rúbrica y retroalimentación entre pares.</p></div>';
+ ed.innerHTML=h}
+[].forEach.call(document.querySelectorAll('[data-e]'),function(g){var k=+g.getAttribute('data-e');g.onclick=function(){se(k)};g.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();se(k)}}});se(1);
+/* ser ver */
+var V=[['Ser','Quién eres y qué sientes. Enfatiza el sentir más que el pensamiento: involucrarse en situaciones reales y concretas como persona.',''],
+['Ver','Cómo te ves a ti mismo y al mundo que te rodea. Enfatiza la comprensión más que la aplicación: entender el significado de ideas y situaciones mediante la observación y la reflexión.',''],
+['Saber','Lo que posees y adquieres. Enfatiza el pensamiento más que el sentimiento: cómo se asimilan hechos y datos y se procesan en el plano conceptual y teórico.',''],
+['Hacer','Las acciones que realizas y las decisiones que tomas. Enfatiza la aplicación práctica más que la comprensión: influir en las personas y cambiar las situaciones.',''],
+['Objetivo de comprensión (insight)','Lo que cambia en la forma de verse a uno mismo y de ver el mundo: se vincula con ser y ver.','Reconocer cómo mis supuestos sobre el estudiante influyen en mis decisiones de diseño.'],
+['Objetivo de conocimiento','Lo que se adquiere y se procesa de forma conceptual: se vincula con ver y saber.','Explicar qué es una Learner Persona y en qué se distingue de un perfil demográfico.'],
+['Objetivo de habilidad','Lo que se puede hacer al aplicar lo sabido: se vincula con saber y hacer.','Elaborar un mapa de empatía a partir de datos de entrevistas.'],
+['Objetivo de comportamiento','Lo que se hace de manera habitual, con decisiones y acciones propias: se vincula con hacer y ser.','Incorporar de forma habitual la voz de quien aprende en cada decisión de diseño.']];
+var vd=$('svd');
+function sv(k){[].forEach.call(document.querySelectorAll('[data-s]'),function(g){g.classList.toggle('on',+g.getAttribute('data-s')===k)});
+ vd.innerHTML='<h3>'+V[k][0]+'</h3><p>'+V[k][1]+'</p>'+(V[k][2]?'<p><b>Ejemplo en el diplomado:</b> '+V[k][2]+'</p>':'')}
+[].forEach.call(document.querySelectorAll('[data-s]'),function(g){var k=+g.getAttribute('data-s');g.onclick=function(){sv(k)};g.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();sv(k)}}});sv(4);
+/* proceso */
+var PR=[['Pregunta','i-search','Se parte de una pregunta que se quiere responder o un problema que se quiere resolver. Formularla bien orienta todo el proceso.','Las preguntas guía de cada sesión. En la sesión 1: ¿quién es el estudiante y qué necesita?'],
+['Investigación','i-user','Se investiga al menos a quien aprende y el resultado de aprendizaje deseado, que permite definir los objetivos.','Sesión 1 (Learner Persona) y sesión 3 (resultados y matriz de alineación).'],
+['Diseño','i-bulb','Se generan ideas y se convierten en diseños que responden a la pregunta o al problema definido.','Sesión 2 (Journey Map) y sesión 4 (arquitectura de experiencias).'],
+['Desarrollo','i-cube','El diseño se convierte en una experiencia real, empezando por un primer prototipo; cada iteración lo detalla más.','Sesión 5: prototipado.'],
+['Prueba','i-check','Se comprueba si funciona: qué objetivos alcanza quien aprende, si logra el resultado deseado y si le resulta atractivo. Probar un prototipo no es lo mismo que probar la experiencia completa.','Sesión 5: evaluación del prototipo y plan de mejora.'],
+['Lanzamiento','i-target','Con la experiencia final probada, se lanza. Se repite el ciclo hasta que la persona diseñadora, quien aprende y las partes interesadas estén satisfechas.','Sesión 5: implementación.']];
+var pdt=$('pdt');
+function sp(k){[].forEach.call(document.querySelectorAll('[data-p]'),function(g){g.classList.toggle('on',+g.getAttribute('data-p')===k)});var p=PR[k];
+ pdt.innerHTML='<h3>Paso '+(k+1)+'. '+p[0]+'</h3><p>'+p[2]+'</p><p><b>En el módulo:</b> '+p[3]+'</p>'}
+[].forEach.call(document.querySelectorAll('[data-p]'),function(g){var k=+g.getAttribute('data-p');g.onclick=function(){sp(k)};g.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();sp(k)}}});
+sp(0);
+
+/* tabs genérico */
+function tabset(boxId,detId,data,render,start){var box=$(boxId),det=$(detId);
+ data.forEach(function(d,k){var b=document.createElement('button');b.textContent=d.n;b.setAttribute('aria-pressed','false');b.onclick=function(){sel(k)};box.appendChild(b)});
+ function sel(k){[].forEach.call(box.children,function(b,j){b.setAttribute('aria-pressed',j===k)});det.innerHTML=render(data[k])}sel(start||0)}
+function cpy(txt,out){try{navigator.clipboard.writeText(txt).then(function(){out.textContent='Copiado'},function(){out.textContent='Selecciona y copia el texto'})}catch(e){out.textContent='Selecciona y copia el texto'}}
+/* checklists */
+[].forEach.call(document.querySelectorAll('ul[data-ck]'),function(u){var id=u.getAttribute('data-ck');
+ u.addEventListener('change',function(){var all=document.querySelectorAll('ul[data-ck="'+id+'"] input'),n=0;[].forEach.call(all,function(x){if(x.checked)n++});$(id+'o').textContent=n+' de '+all.length})});
+/* tablero apertura */
+var bdN=[[],[]],bdCats=['Acompañamiento y retroalimentación','Retos y práctica','Contenido relevante','Plataforma y acceso','Emociones y pertenencia','Tiempo y ritmo'];
+var bdEx=[[0,'Mi tutora respondía en el día y comentaba cada avance.','Acompañamiento y retroalimentación'],[0,'Resolvimos un caso real de mi trabajo, no ejercicios de libro.','Retos y práctica'],[0,'Trabajábamos en equipo y me sentí parte de un grupo.','Emociones y pertenencia'],[1,'Videos de una hora y nadie respondía dudas.','Acompañamiento y retroalimentación'],[1,'La plataforma era confusa y los archivos no abrían en el celular.','Plataforma y acceso'],[1,'Un calendario rígido que no cabía con mi trabajo.','Tiempo y ritmo']];
+function bdR(){var cs=[$('bdM'),$('bdP')];cs.forEach(function(c,k){c.textContent='';bdN[k].forEach(function(n){var d=document.createElement('div');d.className='stk';d.textContent=n[0];var t=document.createElement('i');t.textContent=n[1];d.appendChild(document.createElement('br'));d.appendChild(t);c.appendChild(d)})});
+ var cnt={};bdN[0].concat(bdN[1]).forEach(function(n){cnt[n[1]]=(cnt[n[1]]||0)+1});var h='';bdCats.forEach(function(c){if(cnt[c])h+='<span class="pill">'+c+' · '+cnt[c]+'</span>'});$('bdS').innerHTML=h||'<p class="mut">Aún no hay notas.</p>'}
+function bdAdd(c,t,cat){bdN[c].push([t,cat]);bdR()}
+$('bdA').onclick=function(){var x=$('bdX'),v=x.value.trim();if(!v)return;bdAdd(+$('bdC').value,v,$('bdT').value);x.value='';x.focus()};
+$('bdX').addEventListener('keydown',function(e){if(e.key==='Enter')$('bdA').click()});
+$('bdE').onclick=function(){bdEx.forEach(function(e){bdAdd(e[0],e[1],e[2])})};
+$('bdR').onclick=function(){bdN=[[],[]];bdR()};
+/* técnicas y dimensiones */
+tabset('tqi','tqd',[
+{n:'Características',t:'Quién es y en qué contexto aprende.',l:['Edad, rol, formación y experiencia previa.','Contexto laboral y familiar, tiempo disponible.','Acceso, dispositivos y dominio de la tecnología.','Necesidades de accesibilidad o dificultades de aprendizaje.'],q:['¿Cómo es un día típico para ti?','¿Con qué dispositivo y conexión estudias?']},
+{n:'Necesidades',t:'Qué necesita para alcanzar el resultado de aprendizaje.',l:['Apoyo, recursos y tiempo.','Claridad sobre qué se espera y para qué sirve.','Retroalimentación y acompañamiento.','Condiciones de acceso e inclusión.'],q:['¿Qué te ha impedido terminar un curso en línea?','¿Qué te haría falta para aplicar lo aprendido?']},
+{n:'Motivaciones',t:'Por qué aprende y qué lo sostiene (autonomía, competencia y relación; Deci y Ryan, 2000).',l:['Razones para inscribirse.','Qué lo mantiene cuando se complica.','Sentido de logro, utilidad y pertenencia.'],q:['¿Qué te llevó a inscribirte?','¿Qué te hace seguir cuando el curso se vuelve difícil?']},
+{n:'Expectativas',t:'Qué espera de la experiencia, de quien enseña y de la plataforma.',l:['Resultados esperados y plazos.','Rol de la persona que facilita.','Formato, ritmo y tipo de actividades.'],q:['¿Cómo sería para ti un curso ideal?','¿Qué esperas lograr y en cuánto tiempo?']}],
+function(d){return '<h3>'+d.n+'</h3><p>'+d.t+'</p><p class="hd2">Qué incluye</p><ul class="sq">'+d.l.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul><p class="hd2">Preguntas de ejemplo</p>'+d.q.map(function(x){return '<p style="margin:0 0 .3em"><i>«'+x+'»</i></p>'}).join('')});
+tabset('ttec','ttd',[
+{n:'Entrevista',a:'Conversación individual para entender la historia, las razones y el contexto de una persona.',b:'Pocos temas, preguntas abiertas y de seguimiento («¿qué quieres decir con…?»); sin juzgar ni interpretar de inmediato.',c:'«Cuéntame cómo fue la última vez que tomaste un curso en línea.»',d:'Seguir solo una lista fija de preguntas hace perder información valiosa (Floor, 2023).'},
+{n:'Encuesta',a:'Cuestionario para obtener datos de muchas personas, sobre todo cuantitativos y algo de información cualitativa.',b:'Prioriza pocas preguntas y pruébala antes; ve a donde están las personas o envíala en línea.',c:'«¿En qué momento del día estudias con más frecuencia?» (opciones)',d:'Sirve para medir, no para explicar el porqué; combínala con entrevistas.'},
+{n:'Observación contextual',a:'Mirar cómo actúan las personas en su entorno natural.',b:'Observa conductas, gustos, disgustos y emociones en distintos momentos; toma notas de hechos, no de interpretaciones.',c:'Notar que varias personas no pueden subir un archivo desde el celular.',d:'Lo que se hace y lo que se dice que se hace pueden diferir; avisa y pide permiso.'},
+{n:'Análisis de necesidades',a:'Contrasta lo que las personas hacen o logran hoy con lo que necesitan lograr, usando datos de otras técnicas y de fuentes documentales.',b:'Reúne informes, estadísticas, datos de la plataforma y resultados previos; identifica brechas.',c:'Una finalización del 41 % en cohortes previas y abandono en la semana 3.',d:'Usa fuentes confiables; los datos de redes sociales requieren cuidado (Floor, 2023).'}],
+function(d){return '<h3>'+d.n+'</h3><p>'+d.a+'</p><div class="cols" style="gap:.8rem"><div><p class="hd2">Cómo hacerlo</p><p style="font-size:.9em">'+d.b+'</p></div><div><p class="hd2">Ejemplo</p><p style="font-size:.9em"><i>'+d.c+'</i></p></div><div><p class="hd2">Cuidado</p><p style="font-size:.9em">'+d.d+'</p></div></div>'});
+$('cnsB').onclick=function(){cpy($('cns').textContent,$('cnsO'))};
+/* dataset */
+var ENT=[['Docente de licenciatura, 38 años','Entro después de las 9 de la noche, cuando mis hijos ya duermen. Si el módulo trae un video de una hora, lo dejo «para después» y ya no vuelvo.'],['Docente de ingeniería, 52 años','Llevo veinte años dando clase; no quiero que me expliquen lo básico. Quiero ver casos de mis propios grupos.'],['Docente por asignatura, 29 años','Me inscribí porque mi coordinación lo pide, pero si no me sirve para mi clase del lunes me cuesta justificar el tiempo.'],['Coordinador académico, 45 años','Tengo que entrar por tres pantallas y en el celular no me abren los PDF.'],['Docente, 41 años','Los videos sin subtítulos y los PDF escaneados me obligan a pedir ayuda. Siento que estorbo.'],['Docente, 34 años','En el último curso nadie me respondió en dos semanas y perdí el interés.'],['Docente, 47 años','Los foros donde solo se sube la tarea no me sirven; prefiero sesiones en vivo cortas con colegas.'],['Docente por asignatura, 31 años','Me da pena preguntar en público; prefiero escribirle a alguien que me oriente.']];
+var ENC=[['Dispositivo principal',[['Laptop',54],['Celular',33],['Tableta',13]]],['Momento preferido para estudiar',[['Después de las 8 p. m.',46],['Fin de semana',31],['Horario laboral',23]]],['Tiempo disponible a la semana',[['Menos de 2 h',35],['2 a 4 h',44],['Más de 4 h',21]]],['Lo que más motiva',[['Aplicar lo aprendido en mi clase',58],['Obtener certificación',21],['Intercambiar con colegas',15],['Otro',6]]],['Mayor dificultad en cursos en línea',[['Falta de tiempo',52],['Retroalimentación tardía',25],['Problemas técnicos o de acceso',15],['Contenidos poco relevantes',8]]]];
+var OBS=['En la sesión en vivo, tras 40 minutos, 9 de 22 personas apagaron la cámara y dejaron de intervenir.','Al abrir la actividad 2, 7 personas preguntaron en el chat dónde entregar; 2 no pudieron subir el archivo desde el celular.','Al mostrar un ejemplo real de rúbrica, las personas tomaron notas y lo compartieron en el chat.','Quienes trabajaron en parejas terminaron la tarea; varias personas que la hicieron solas la dejaron incompleta.','Datos de la plataforma: finalización de cohortes previas, 41 %; el mayor abandono ocurre en la semana 3.'];
+tabset('dsT','dsD',[{n:'Entrevistas (8)'},{n:'Encuesta (n = 48)'},{n:'Observación y plataforma'}],function(d){
+ if(d.n.indexOf('Entrev')===0)return ENT.map(function(e,k){return '<p class="qt"><b>E'+(k+1)+' · '+e[0]+'</b>«'+e[1]+'»</p>'}).join('');
+ if(d.n.indexOf('Encu')===0)return ENC.map(function(q){return '<p class="hd2" style="margin-top:.8em">'+q[0]+' (%)</p>'+q[1].map(function(o){return '<div class="bar"><span>'+o[0]+'</span><div class="t"><i style="width:'+o[1]+'%"></i></div><b>'+o[1]+'</b></div>'}).join('')}).join('');
+ return OBS.map(function(o,k){return '<p class="qt"><b>'+(k<4?'Observación '+(k+1):'Plataforma')+'</b>'+o+'</p>'}).join('')});
+/* affinity */
+var AFN=[['E1','Entro después de las 9 de la noche, cuando mis hijos ya duermen.',0],['E1','Si el módulo trae un video de una hora, lo dejo «para después» y ya no vuelvo.',0],['E2','No quiero que me expliquen lo básico; quiero ver casos de mis propios grupos.',1],['E3','Si no me sirve para mi clase del lunes, me cuesta justificar el tiempo.',1],['E4','Tengo que entrar por tres pantallas y en el celular no abren los PDF.',3],['E5','Los videos sin subtítulos y los PDF escaneados me obligan a pedir ayuda. Siento que estorbo.',3],['E6','En el último curso nadie me respondió en dos semanas y perdí el interés.',2],['E7','Los foros donde solo se sube la tarea no me sirven; prefiero sesiones en vivo cortas con colegas.',4],['E8','Me da pena preguntar en público; prefiero escribirle a alguien que me oriente.',2],['Enc.','46 % estudia después de las 8 p. m.',0],['Enc.','35 % dispone de menos de 2 h a la semana.',0],['Enc.','58 % se motiva más al aplicar lo aprendido en su clase.',1],['Enc.','25 % señala la retroalimentación tardía como su mayor dificultad.',2],['Enc.','33 % usa el celular como dispositivo principal.',3],['Enc.','15 % se motiva al intercambiar con colegas.',4],['Obs.','Tras 40 min de sesión en vivo, 9 de 22 personas apagaron la cámara y dejaron de intervenir.',0],['Obs.','Al abrir la actividad 2, 7 personas preguntaron en el chat dónde entregar; 2 no pudieron subir el archivo desde el celular.',3],['Obs.','Al mostrar un ejemplo real de rúbrica, tomaron notas y lo compartieron en el chat.',1],['Obs.','Quienes trabajaron en parejas terminaron la tarea; varias que la hicieron solas la dejaron incompleta.',4],['Plat.','Finalización de cohortes previas: 41 %; el mayor abandono ocurre en la semana 3.',0]];
+var AFS=['Tiempo y ritmo','Relevancia y aplicación','Acompañamiento y retroalimentación','Plataforma y accesibilidad','Aprender con otras personas'];
+var afNotes,afNames,afSel=-1;
+function afInit(){afNotes=AFN.map(function(n,k){return {id:k,s:n[0],t:n[1],g:-1,sg:n[2]}});afNames=['Grupo 1','Grupo 2','Grupo 3','Grupo 4','Grupo 5'];afSel=-1;afRender()}
+function noteEl(n){var b=document.createElement('button');b.className='note'+(n.id===afSel?' sel':'');b.type='button';b.textContent=n.t;var m=document.createElement('small');m.textContent=n.s;b.appendChild(m);b.onclick=function(){afSel=(afSel===n.id?-1:n.id);afRender()};return b}
+function afRender(){var p=$('afp'),g=$('afg'),bar=$('afbar');p.textContent='';g.textContent='';
+ afNotes.forEach(function(n){if(n.g<0)p.appendChild(noteEl(n))});
+ afNames.forEach(function(nm,k){var c=document.createElement('div');var inp=document.createElement('input');inp.type='text';inp.value=nm;inp.setAttribute('aria-label','Nombre del grupo '+(k+1));inp.oninput=function(){afNames[k]=inp.value;afBar()};c.appendChild(inp);afNotes.forEach(function(n){if(n.g===k)c.appendChild(noteEl(n))});g.appendChild(c)});
+ var un=afNotes.filter(function(n){return n.g<0}).length;$('afC').textContent=un+' sin agrupar de '+afNotes.length;afBar()}
+function afBar(){var bar=$('afbar');bar.textContent='';if(afSel<0){var s=document.createElement('span');s.className='sl';s.textContent='Selecciona una nota y elige su grupo.';bar.appendChild(s);return}
+ var l=document.createElement('span');l.className='sl';l.textContent='Mover a:';bar.appendChild(l);
+ afNames.forEach(function(nm,k){var b=document.createElement('button');b.textContent=nm||('Grupo '+(k+1));b.onclick=function(){afNotes[afSel].g=k;afSel=-1;afRender()};bar.appendChild(b)});
+ var u=document.createElement('button');u.textContent='Sin agrupar';u.onclick=function(){afNotes[afSel].g=-1;afSel=-1;afRender()};bar.appendChild(u)}
+$('afS').onclick=function(){afNotes.forEach(function(n){n.g=n.sg});afNames=AFS.slice();afSel=-1;afRender()};
+$('afR').onclick=afInit;
+$('afN').onclick=function(){var x=$('afX'),v=x.value.trim();if(!v)return;afNotes.push({id:afNotes.length,s:'Nueva',t:v,g:-1,sg:-1});x.value='';afRender()};
+afInit();
+/* hallazgo */
+function hbU(){var a=$('hbA').value.trim(),b=$('hbB').value.trim(),c=$('hbC').value.trim();$('hbR').textContent=(a||b||c)?((a||'[quién]')+' necesita '+(b||'[necesidad]')+' porque '+(c||'[evidencia]')+'.'):'Completa los tres campos.'}
+['hbA','hbB','hbC'].forEach(function(id){$(id).addEventListener('input',hbU)});
+$('hbE').onclick=function(){$('hbA').value='Docentes universitarios con carga mixta';$('hbB').value='avanzar en pasos pequeños y flexibles';$('hbC').value='estudian de noche, con menos de 2 h a la semana, y el abandono se concentra en la semana 3';hbU()};
+$('hbK').onclick=function(){cpy($('hbR').textContent,$('hbO'))};
+/* persona */
+var PP=[
+{n:'Perfil y contexto',x:'38 años, docente de licenciatura en Ciencias Sociales con 12 años de experiencia. Combina clases, tutorías y labores del hogar. Puebla, México.',g:'Datos demográficos básicos y contexto de vida relacionados con el tema.',e:'Perfil de las entrevistas y de la encuesta.',c:'Evita estereotipos en nombre, género e imagen; usa datos y no suposiciones.'},
+{n:'Meta de aprendizaje',x:'Mejorar la retroalimentación a sus estudiantes sin duplicar su carga de trabajo.',g:'Qué quiere lograr y para qué; relaciona con el resultado de aprendizaje.',e:'Entrevistas: razones para inscribirse.',c:'No confundas meta con curso: es lo que quiere poder hacer.'},
+{n:'Motivadores',x:'Aplicar de inmediato en su clase; ver ejemplos reales; conversar con colegas.',g:'Lo que impulsa y sostiene su esfuerzo.',e:'Encuesta: 58 % se motiva al aplicar; observación del ejemplo de rúbrica.',c:'Que tengan evidencia; evita listar motivadores genéricos.'},
+{n:'Barreras',x:'Estudia de noche con menos de 2 h a la semana; videos largos; PDF que no abren en el celular.',g:'Lo que dificulta o impide aprender, del entorno y de la persona.',e:'Entrevistas, encuesta y datos de la plataforma.',c:'No culpes a la persona: muchas barreras vienen del diseño.'},
+{n:'Hábitos y recursos digitales',x:'Laptop en casa y celular en traslados; usa la plataforma institucional y mensajería.',g:'Dispositivos, conexión, herramientas y nivel de dominio.',e:'Encuesta (dispositivo, horario) y observación.',c:'No supongas dominio tecnológico por la edad.'},
+{n:'Expectativas',x:'Módulos breves, respuesta en pocos días y una certificación útil para su coordinación.',g:'Lo que espera de la experiencia, de quien enseña y de la plataforma.',e:'Entrevistas: qué esperan y qué los frustró.',c:'Distingue expectativas de necesidades reales.'},
+{n:'Cita representativa',x:'«Si el módulo trae un video de una hora, lo dejo “para después” y ya no vuelvo.»',g:'Una frase textual que resuma su postura, tomada de los datos.',e:'Transcripciones de entrevistas.',c:'Usa citas reales, con seudónimo y con permiso.'},
+{n:'Accesibilidad e inclusión',x:'Materiales descargables y compatibles con celular; subtítulos y textos accesibles; opciones de lectura.',g:'Necesidades de acceso, diversidad y apoyos para participar con equidad.',e:'Entrevista sobre subtítulos y PDF; DUA (CAST, 2024).',c:'Hazla desde el origen, no como ajuste final.'}];
+var ppg=$('ppg'),ppd=$('ppd');
+PP.forEach(function(p,k){var b=document.createElement('button');b.type='button';var t=document.createElement('b');t.textContent=p.n;b.appendChild(t);b.appendChild(document.createTextNode(p.x));b.onclick=function(){ps(k)};ppg.appendChild(b)});
+function ps(k){[].forEach.call(ppg.children,function(b,j){b.setAttribute('aria-pressed',j===k)});var p=PP[k];ppd.innerHTML='<h3>'+p.n+'</h3><p><b>Qué incluir:</b> '+p.g+'</p><p><b>De dónde sale (en el caso):</b> '+p.e+'</p><p><b>Cuidado:</b> '+p.c+'</p>'}ps(0);
+/* mapa de empatía */
+var EM=[{n:'Plantilla del taller',a:[
+['Piensa y siente','¿Qué le preocupa, le ilusiona o le genera dudas al aprender?','Me preocupa no tener tiempo; me ilusiona aplicar algo nuevo en mi clase.'],
+['Dice','Frases textuales tomadas de las entrevistas.','«Lo dejo para después y ya no vuelvo.»'],
+['Hace','Conductas observadas cuando estudia o participa.','Estudia de noche, abandona en la semana 3 y avanza más en parejas.'],
+['Escucha o ve','Qué influye desde su entorno: colegas, plataformas, institución.','Su coordinación lo pide; colegas comparten ejemplos; la plataforma exige varias pantallas.'],
+['Frustraciones','Lo que le frena o le molesta.','Retroalimentación tardía; PDF que no abren en el celular.'],
+['Logros esperados','Lo que considera un buen resultado.','Aplicar lo aprendido en su clase y recibir respuesta en pocos días.']]},
+{n:'Versión para estudiantes (Floor)',a:[
+['Ser','¿Quién soy? ¿Cómo me siento?','Soy docente de 38 años con carga mixta; me siento cansada pero curiosa.'],
+['Ver','¿Cuáles son mis puntos de vista? ¿Qué veo?','Creo que un curso en línea debe servir en mi aula; veo a colegas que abandonan.'],
+['Saber','¿Qué sé? ¿Cuáles son mis habilidades?','Domino mi disciplina y la plataforma básica; me falta práctica en evaluación formativa.'],
+['Hacer','¿Cómo me comporto? ¿Qué hago?','Estudio de noche, dejo pendientes y pregunto a colegas.'],
+['Positivo','¿Qué me motiva o me permite aprender?','Ejemplos reales, trabajo en pares y respuesta pronta.'],
+['Negativo','¿Qué me desmotiva o me impide aprender?','Videos largos, plataforma confusa y silencio de quien enseña.']]}];
+var emV=0,emK=0;
+function emR(){var g=$('emg');g.textContent='';EM[emV].a.forEach(function(a,k){var b=document.createElement('button');b.type='button';b.className=k>3?'wd':'';b.setAttribute('aria-pressed',k===emK);var t=document.createElement('b');t.textContent=a[0];var q=document.createElement('span');q.textContent=a[1];b.appendChild(t);b.appendChild(q);b.onclick=function(){emK=k;emR()};g.appendChild(b)});
+ var a=EM[emV].a[emK];$('emd').innerHTML='<h3>'+a[0]+'</h3><p><b>Ejemplo del caso:</b> '+a[2]+'</p><p class="mut" style="font-size:.86em;margin:0">Completa con datos reales, relaciona cada área con el resultado de aprendizaje deseado y actualízalo cuando tengas nueva información (Floor, 2023).</p>'}
+var emT=$('emT');EM.forEach(function(v,k){var b=document.createElement('button');b.textContent=v.n;b.setAttribute('aria-pressed',k===0);b.onclick=function(){emV=k;emK=0;[].forEach.call(emT.children,function(x,j){x.setAttribute('aria-pressed',j===k)});emR()};emT.appendChild(b)});emR();
+/* matriz */
+var MX=[['46 % estudia de noche; 35 % tiene menos de 2 h a la semana; abandono en la semana 3.','Poco tiempo, fragmentado.','Avanzar en pasos pequeños con logro visible.','Microunidades de 15 a 20 min, progreso visible y fechas flexibles.'],['58 % se motiva al aplicar en su clase; el ejemplo real de rúbrica generó participación.','Contenidos genéricos que no se conectan con su aula.','Aplicabilidad inmediata y ejemplos reales.','Casos y productos reutilizables en su propia asignatura.'],['33 % usa el celular; PDF y videos sin subtítulos no son accesibles.','Materiales que no abren en el celular ni son accesibles.','Poder estudiar en cualquier lugar y de varias formas.','Formatos múltiples (DUA): texto accesible, subtítulos y descarga móvil.'],['25 % señala la retroalimentación tardía; abandono tras la falta de respuesta.','Silencio de quien facilita.','Sentirse acompañada y reconocida.','Tiempos de respuesta acordados y retroalimentación entre pares.']];
+var mxOn=true;function mxR(){var t=$('mxT'),h='<tr><th>Hallazgo (evidencia)</th><th>Barrera</th><th>Motivador</th><th>Oportunidad de diseño</th></tr>';
+ for(var k=0;k<4;k++){h+='<tr>'+(mxOn?MX[k].map(function(c){return '<td>'+c+'</td>'}).join(''):'<td></td><td></td><td></td><td></td>')+'</tr>'}
+ t.className='mx'+(mxOn?'':' blank');t.innerHTML=h;$('mxB').textContent=mxOn?'Ocultar ejemplo':'Mostrar ejemplo';$('mxB').setAttribute('aria-pressed',!mxOn)}
+$('mxB').onclick=function(){mxOn=!mxOn;mxR()};mxR();
+/* ciclo */
+var C=[
+{n:'Learner Persona',s:'Sesión 1',ic:'i-user',q:'¿Quién es el estudiante y qué necesita?',a:'Learner Persona, mapa de empatía y matriz de barreras, motivadores y oportunidades.',t:['Entrevistas','Observación','Encuestas','Mapas de empatía'],f:['Constructivismo','Enfoque sociocultural','Andragogía','Diseño centrado en las personas']},
+{n:'Journey Map',s:'Sesión 2',ic:'i-route',q:'¿Qué recorrido y experiencia vivirá?',a:'Learner Journey Map con momentos críticos y estrategias de compromiso.',t:['Learning Journey Map','Mapa de puntos de contacto'],f:['Aprendizaje experiencial','Motivación','Aprendizaje situado']},
+{n:'Matriz de alineación',s:'Sesión 3',ic:'i-check',q:'¿Cómo se articulan objetivos, actividades y evaluación?',a:'Matriz de alineación entre resultados, actividades y evaluación.',t:['Objetivos y competencias','Resultados esperados','Matriz de alineación'],f:['Aprendizaje significativo','Constructivismo','Diseño orientado a objetivos']},
+{n:'Arquitectura de experiencias',s:'Sesión 4',ic:'i-cube',q:'¿Cómo organizamos los componentes del aprendizaje?',a:'Blueprint de la arquitectura de la experiencia.',t:['Blueprint de experiencia','Secuencias didácticas','Mapas de interacción'],f:['Constructivismo','Aprendizaje experiencial','Ciencias cognitivas','Aprendizaje multimedia']},
+{n:'Prototipado, implementación y evaluación',s:'Sesión 5',ic:'i-loop',q:'¿Cómo comprobamos y mejoramos la experiencia?',a:'Prototipo, informe de la prueba y plan de mejora con indicadores.',t:['Rúbricas','Analítica de aprendizaje','Pruebas de usuario','Evaluación formativa'],f:['Evaluación para el aprendizaje','Metacognición','Diseño iterativo']}
+];
+var AX={n:'Accesibilidad, inclusión y DUA',s:'Sesiones 3 a 5',q:'¿Qué condiciones de participación y qué barreras podrían limitar el aprendizaje?',a:'Lista de cotejo de accesibilidad y DUA aplicada al blueprint y al prototipo.',t:['Criterios DUA','Auditorías de accesibilidad','Pruebas de usabilidad'],f:['Diseño Universal para el Aprendizaje','Educación inclusiva']};
+var st=$('st'),cd=$('cd'),axb=$('axb');
+C.forEach(function(c,k){var b=document.createElement('button');b.setAttribute('role','tab');b.setAttribute('aria-controls','cd');
+  b.innerHTML='<svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#'+c.ic+'"/></svg><small>'+c.s+'</small><b>'+(k+1)+'. '+c.q+'</b><small class="nm">'+c.n+'</small>';b.onclick=function(){cs(k)};st.appendChild(b)});
+axb.onclick=function(){cs(-1)};
+function pills(a){return a.map(function(x){return '<span class="pill">'+x+'</span>'}).join('')}
+function cs(k){[].forEach.call(st.children,function(b,j){b.setAttribute('aria-selected',j===k)});axb.setAttribute('aria-selected',k===-1);
+  var c=k<0?AX:C[k];
+  cd.innerHTML='<p class="q" style="font-size:1.3em;margin:0 0 .3em">'+(k<0?'':(k+1)+'. ')+c.q+'</p><h3 style="margin-bottom:.6em">'+c.n+' · '+c.s+'</h3><p><b>Artefacto:</b> '+c.a+'</p><p style="margin-bottom:.2em"><b>Herramientas</b></p><div>'+pills(c.t)+'</div><p style="margin:.4em 0 .2em"><b>Se apoya en</b></p><div>'+pills(c.f)+'</div>'}
+cs(0);
+var h=location.hash.match(/^#d-(\d+)$/);go(h?+h[1]-1:0);
+})();
+
+(function(){
+var C=[['Sustento en datos',25,[['Evaluar','la suficiencia de la evidencia y citar de forma explícita entrevistas, encuestas u observación en todos los rasgos.'],['Relacionar','la mayoría de los rasgos con datos e identificar cuáles son supuestos.'],['Describir','algunos rasgos con apoyo en datos; predominan los supuestos.'],['Enumerar','rasgos sin evidencia de investigación.']]],
+['Necesidades, motivaciones y expectativas',25,[['Sintetizar','con profundidad lo que la persona necesita, la mueve y espera, y vincularlo con su contexto de aprendizaje.'],['Distinguir','necesidades y motivaciones con claridad, con poca profundidad en el contexto.'],['Describir','rasgos generales o demográficos con pocas necesidades concretas.'],['Listar','datos demográficos o estereotipos.']]],
+['Barreras, motivadores y oportunidades',20,[['Formular','oportunidades accionables y priorizarlas por impacto y esfuerzo a partir de una matriz completa.'],['Clasificar','barreras y motivadores en una matriz completa; las oportunidades son poco precisas o no están priorizadas.'],['Identificar','algunas barreras o motivadores en una matriz parcial.'],['Mencionar','barreras sin relación con la persona.']]],
+['Mapa de empatía',15,[['Elaborar','hallazgos no obvios al integrar lo que la persona piensa, siente, dice y hace.'],['Aplicar','la estructura del mapa con cuadrantes coherentes y hallazgos previsibles.'],['Explicar','solo algunos cuadrantes, que están incompletos o son inconsistentes.'],['Enunciar','ideas sueltas; el mapa falta o es superficial.']]],
+['Claridad y presentación',15,[['Diseñar','una presentación visual clara y sintética, fácil de usar por un equipo de diseño.'],['Organizar','la información con claridad, con detalles menores por mejorar.'],['Resumir','la información de forma confusa o excesivamente extensa.'],['Transcribir','información de forma desordenada o ilegible.']]]];
+var L=[['Excelente',10,'Evaluar · Crear'],['Satisfactorio',8,'Analizar · Aplicar'],['En desarrollo',6,'Comprender'],['Insuficiente',5,'Recordar']],sel=[];
+var t=document.getElementById('rbT');if(!t)return;
+function draw(){t.textContent='';var h=t.createTHead().insertRow();
+ var th=document.createElement('th');th.textContent='Criterio';h.appendChild(th);
+ L.forEach(function(l){th=document.createElement('th');th.textContent=l[0]+' · '+l[1];var sm=document.createElement('span');sm.className='w';sm.textContent=l[2];th.appendChild(sm);h.appendChild(th)});
+ var tb=t.createTBody();
+ C.forEach(function(c,i){var r=tb.insertRow(),td=r.insertCell(),b=document.createElement('b');b.textContent=c[0];td.appendChild(b);
+  var w=document.createElement('span');w.className='w';w.textContent=c[1]+' %';td.appendChild(w);
+  c[2].forEach(function(x,k){var cell=r.insertCell(),bt=document.createElement('button'),vb=document.createElement('b');bt.type='button';vb.textContent=x[0];bt.appendChild(vb);bt.appendChild(document.createTextNode(' '+x[1]));
+   bt.setAttribute('aria-pressed',sel[i]===k?'true':'false');
+   bt.onclick=function(){sel[i]=sel[i]===k?undefined:k;draw()};cell.appendChild(bt)})});
+ var n=0,g=0;C.forEach(function(c,i){if(sel[i]!==undefined){n++;g+=c[1]/100*L[sel[i]][1]}});
+ var G=document.getElementById('rbG'),M=document.getElementById('rbM');
+ if(n<5){G.textContent='—';M.textContent='Elige un nivel por criterio ('+n+' de 5).'}
+ else{G.textContent=g.toFixed(1);M.textContent=g>=6?'Calificación aprobatoria (mínimo 6.0).':'Calificación no aprobatoria (mínimo 6.0).'}}
+document.getElementById('rbR').onclick=function(){sel=[];draw()};draw();
+})();
+
+</script>
+
+</body></html>
